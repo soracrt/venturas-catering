@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,6 +15,8 @@ import {
   Users,
   Utensils,
   Sparkles,
+  MapPin,
+  Navigation,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -99,18 +101,45 @@ function formatMYR(n: number) {
   }).format(n);
 }
 
+type TransportData = { distanceKm: number | null; durationMin: number | null; transportFee: number; breakdown: string };
+
 // ── COMPONENT ─────────────────────────────────────────────────────────────
 
 export default function QuoteCalculator() {
-  const [eventType, setEventType]     = useState<string>("");
-  const [guests, setGuests]           = useState<number>(50);
-  const [tier, setTier]               = useState<string>("standard");
-  const [addOns, setAddOns]           = useState<AddOnId[]>([]);
-  const [unlocked, setUnlocked]       = useState(false);
-  const [submitted, setSubmitted]     = useState(false);
-  const [showAddOns, setShowAddOns]   = useState(false);
+  const [eventType, setEventType]       = useState<string>("");
+  const [guests, setGuests]             = useState<number>(50);
+  const [tier, setTier]                 = useState<string>("standard");
+  const [addOns, setAddOns]             = useState<AddOnId[]>([]);
+  const [unlocked, setUnlocked]         = useState(false);
+  const [submitted, setSubmitted]       = useState(false);
+  const [showAddOns, setShowAddOns]     = useState(false);
+  const [venueAddress, setVenueAddress] = useState("");
+  const [transport, setTransport]       = useState<TransportData | null>(null);
+  const [distLoading, setDistLoading]   = useState(false);
+  const distDebounce                    = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const estimate = eventType ? computeEstimate(eventType, guests, tier, addOns) : null;
+  const totalWithTransport = estimate && transport
+    ? { ...estimate, min: estimate.min + transport.transportFee, max: estimate.max + transport.transportFee }
+    : estimate;
+
+  async function lookupDistance(address: string) {
+    if (!address || address.length < 5) return;
+    setDistLoading(true);
+    try {
+      const res  = await fetch(`/api/distance?destination=${encodeURIComponent(address + ", Malaysia")}`);
+      const data = await res.json();
+      if (!data.error) setTransport(data);
+    } catch { /* silent */ }
+    setDistLoading(false);
+  }
+
+  function handleVenueChange(v: string) {
+    setVenueAddress(v);
+    setTransport(null);
+    if (distDebounce.current) clearTimeout(distDebounce.current);
+    distDebounce.current = setTimeout(() => lookupDistance(v), 800);
+  }
 
   const {
     register,
@@ -148,10 +177,12 @@ export default function QuoteCalculator() {
             </div>
           </div>
           <div className="text-right">
-            <p className="font-serif font-bold text-xl md:text-2xl text-[#b8932a]">
-              {formatMYR(estimate.min)} – {formatMYR(estimate.max)}
+            <p className="font-serif font-bold text-xl md:text-2xl text-[#c9a84c]">
+              {formatMYR((totalWithTransport || estimate).min)} – {formatMYR((totalWithTransport || estimate).max)}
             </p>
-            <p className="text-[10px] text-stone-500">Indicative. Unlock for detailed breakdown.</p>
+            <p className="text-[10px] text-stone-500">
+              {transport ? "Incl. transport fee · " : ""}Unlock for itemised breakdown.
+            </p>
           </div>
         </div>
       )}
@@ -319,6 +350,47 @@ export default function QuoteCalculator() {
                   </label>
                 );
               })}
+            </div>
+          )}
+        </div>
+
+        {/* Step 5 — Venue Address (Distance Pricing) */}
+        <div className="p-7 border-b border-stone-100">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-7 h-7 rounded-full bg-[#c9a84c] text-[#080808] text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <h3 className="font-semibold text-[#1c1c1e]">Event Venue</h3>
+            <span lang="ms" className="text-xs text-stone-400 italic">Lokasi Acara</span>
+            <span className="text-[10px] text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">Auto transport fee</span>
+          </div>
+          <div className="relative">
+            <MapPin className="absolute left-4 top-3.5 w-4 h-4 text-stone-400" />
+            <input
+              type="text"
+              placeholder="e.g. Shah Alam Convention Centre, Subang Jaya..."
+              value={venueAddress}
+              onChange={(e) => handleVenueChange(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:border-[#c9a84c] focus:ring-2 focus:ring-[#c9a84c]/15 outline-none text-sm text-[#1c1c1e] placeholder:text-stone-400"
+            />
+            {distLoading && (
+              <div className="absolute right-4 top-3.5 w-4 h-4 border-2 border-[#c9a84c] border-t-transparent rounded-full animate-spin" />
+            )}
+          </div>
+          {transport && (
+            <div className="mt-3 bg-[#c9a84c]/8 border border-[#c9a84c]/20 rounded-xl p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Navigation className="w-4 h-4 text-[#c9a84c]" />
+                <div>
+                  <p className="text-sm font-semibold text-[#1c1c1e]">
+                    {transport.distanceKm ? `${transport.distanceKm} km` : "Distance calculated"}
+                    {transport.durationMin ? ` · ~${transport.durationMin} min drive` : ""}
+                  </p>
+                  <p className="text-xs text-stone-500">{transport.breakdown}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-bold text-[#c9a84c]">+RM {transport.transportFee}</p>
+                <p className="text-[10px] text-stone-500">transport</p>
+              </div>
             </div>
           )}
         </div>
