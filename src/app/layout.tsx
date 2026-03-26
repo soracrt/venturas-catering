@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Inter, Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import SchemaOrg from "@/components/seo/SchemaOrg";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -17,18 +18,28 @@ const inter = Inter({
   display: "swap",
 });
 
+const notoSans = Noto_Sans({
+  variable: "--font-noto",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Venturas Catering | Premium Event Catering in Malaysia",
+    default: "Venturas Catering | Premium Halal Event Catering Shah Alam & Selangor",
     template: "%s | Venturas Catering",
   },
   description:
-    "Venturas Catering delivers premium corporate and private event catering across Malaysia. From boardroom lunches to grand weddings — we bring exceptional food and service to your table.",
+    "Premium Halal-certified catering for corporate events and private occasions in Shah Alam, Selangor & KL. Weddings, conferences, product launches. Get an instant quote.",
   keywords: [
-    "catering Malaysia",
+    "catering Shah Alam",
+    "catering Selangor",
+    "Halal catering Malaysia",
     "wedding catering KL",
-    "corporate catering Malaysia",
-    "event catering",
+    "corporate catering Selangor",
+    "event catering Malaysia",
+    "katering Shah Alam",
     "Venturas Catering",
   ],
   metadataBase: new URL("https://venturascatering.my"),
@@ -48,8 +59,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-MY" className={`${playfair.variable} ${inter.variable} h-full antialiased`}>
+    <html
+      lang="en-MY"
+      className={`${playfair.variable} ${inter.variable} ${notoSans.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col font-sans bg-white text-stone-900">
+        <SchemaOrg />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

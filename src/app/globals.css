@@ -3,6 +3,7 @@
 :root {
   --font-playfair: "Playfair Display", serif;
   --font-inter: "Inter", sans-serif;
+  --font-noto: "Noto Sans", sans-serif;
 
   /* Brand palette */
   --color-gold: #b8932a;
@@ -23,16 +24,38 @@
   --color-charcoal: var(--color-charcoal);
   --color-cream: var(--color-cream);
   --color-warm-gray: var(--color-warm-gray);
+
+  --animate-marquee: marquee 35s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 35s linear infinite;
+  --animate-fade-up: fade-up 0.6s ease forwards;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-h1,
-h2,
-h3,
-h4 {
+/* Malay + English bilingual: Noto Sans covers both gracefully */
+:lang(ms) {
+  font-family: var(--font-noto), var(--font-inter), sans-serif;
+  letter-spacing: 0.01em;
+}
+
+h1, h2, h3, h4 {
   font-family: var(--font-playfair);
 }
 
@@ -40,4 +63,18 @@ body {
   background: #ffffff;
   color: var(--color-charcoal);
   font-family: var(--font-inter);
+}
+
+/* Menu card ingredient reveal */
+.menu-card-overlay {
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.menu-card:hover .menu-card-overlay {
+  transform: translateY(0);
+}
+
+/* Marquee pause on hover */
+.marquee-track:hover {
+  animation-play-state: paused;
 }

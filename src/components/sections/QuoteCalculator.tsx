@@ -4,279 +4,438 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Calculator, ArrowRight, CheckCircle } from "lucide-react";
+import {
+  Calculator,
+  ArrowRight,
+  CheckCircle,
+  Lock,
+  Unlock,
+  ChevronDown,
+  ChevronUp,
+  Users,
+  Utensils,
+  Sparkles,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const schema = z.object({
-  eventType: z.enum(["corporate-lunch", "conference", "product-launch", "office", "wedding", "birthday", "social", "themed"]).refine(Boolean, { message: "Please select an event type" }),
-  guestCount: z
-    .number({ error: "Enter a valid number" })
-    .min(10, "Minimum 10 guests")
-    .max(2000, "For 2000+ guests, please contact us directly"),
-  packageTier: z.enum(["standard", "premium", "luxury"]),
-  eventDate: z.string().min(1, "Please select a date"),
-  name: z.string().min(2, "Name required"),
+// ── PRICING DATA ────────────────────────────────────────────────────────────
+
+export const EVENT_TYPES = [
+  { value: "corporate-lunch",   label: "Corporate Lunch",            labelMs: "Makan Tengahari Korporat", baseRate: 28, category: "corporate" },
+  { value: "conference",        label: "Conference / Seminar",        labelMs: "Persidangan / Seminar",    baseRate: 65, category: "corporate" },
+  { value: "product-launch",    label: "Product Launch / Gala",       labelMs: "Pelancaran Produk / Gala", baseRate: 150, category: "corporate" },
+  { value: "office-recurring",  label: "Recurring Office Catering",   labelMs: "Katering Pejabat Tetap",  baseRate: 22, category: "corporate" },
+  { value: "wedding",           label: "Wedding Reception",           labelMs: "Resepsi Perkahwinan",     baseRate: 88, category: "private" },
+  { value: "birthday",          label: "Birthday / Anniversary",      labelMs: "Hari Jadi / Ulangtahun",  baseRate: 45, category: "private" },
+  { value: "social",            label: "Social Gathering",            labelMs: "Majlis Keluarga/Rakan",   baseRate: 35, category: "private" },
+  { value: "themed",            label: "Themed / Custom Event",       labelMs: "Majlis Tema / Khas",      baseRate: 120, category: "private" },
+] as const;
+
+export const PACKAGE_TIERS = [
+  { value: "standard", label: "Standard",  labelMs: "Standard",   multiplier: 1.0, description: "Quality essentials, full setup" },
+  { value: "premium",  label: "Premium",   labelMs: "Premium",    multiplier: 1.45, description: "Enhanced presentation, live stations" },
+  { value: "luxury",   label: "Luxury",    labelMs: "Mewah",      multiplier: 2.1,  description: "White-glove, custom décor, chef table" },
+] as const;
+
+export const ADD_ONS = [
+  { id: "waiters",       label: "Uniformed Waitstaff",   labelMs: "Pelayan Berpakaian Seragam", pricePerPax: 8,   priceFixed: undefined, icon: Users,   description: "1 server per 25 guests" },
+  { id: "decor",         label: "Table Décor & Linen",   labelMs: "Hiasan Meja & Linen",       pricePerPax: undefined, priceFixed: 650,   icon: Sparkles,description: "Centrepieces, tablecloths, napkins" },
+  { id: "floral",        label: "Floral Arrangements",   labelMs: "Hiasan Bunga Segar",        pricePerPax: undefined, priceFixed: 950,   icon: Sparkles,description: "Fresh floral for all tables" },
+  { id: "sound",         label: "PA / Sound System",     labelMs: "Sistem PA / Bunyi",         pricePerPax: undefined, priceFixed: 380,   icon: Utensils,description: "Mic, speakers, for speeches" },
+  { id: "photography",   label: "Event Photography",     labelMs: "Fotografi Acara",           pricePerPax: undefined, priceFixed: 1200,  icon: Sparkles,description: "3-hour professional coverage" },
+  { id: "live-station",  label: "Extra Live Station",    labelMs: "Stesen Memasak Langsung",   pricePerPax: 6,   priceFixed: 400,   icon: Utensils,description: "Additional live cooking station" },
+] as const;
+
+type AddOnId = typeof ADD_ONS[number]["id"];
+
+// ── ZOD SCHEMA ───────────────────────────────────────────────────────────────
+
+const contactSchema = z.object({
+  name:  z.string().min(2, "Name required"),
   email: z.string().email("Enter a valid email"),
   phone: z.string().min(9, "Enter a valid phone number"),
 });
+type ContactData = z.infer<typeof contactSchema>;
 
-type QuoteFormData = z.infer<typeof schema>;
+// ── UTILS ─────────────────────────────────────────────────────────────────
 
-const eventTypes = [
-  { value: "corporate-lunch", label: "Corporate Lunch", category: "corporate", baseRate: 28 },
-  { value: "conference", label: "Conference / Seminar", category: "corporate", baseRate: 65 },
-  { value: "product-launch", label: "Product Launch / Gala", category: "corporate", baseRate: 150 },
-  { value: "office", label: "Recurring Office Catering", category: "corporate", baseRate: 22 },
-  { value: "wedding", label: "Wedding Reception", category: "private", baseRate: 88 },
-  { value: "birthday", label: "Birthday / Anniversary", category: "private", baseRate: 45 },
-  { value: "social", label: "Social Gathering", category: "private", baseRate: 35 },
-  { value: "themed", label: "Themed / Custom Event", category: "private", baseRate: 120 },
-];
+function computeEstimate(
+  eventType: string,
+  guests: number,
+  tier: string,
+  addOns: AddOnId[]
+): { min: number; max: number; breakdown: { label: string; amount: number }[] } | null {
+  const event = EVENT_TYPES.find((e) => e.value === eventType);
+  const tierData = PACKAGE_TIERS.find((t) => t.value === tier);
+  if (!event || !tierData || !guests || guests < 10) return null;
 
-const tiers = [
-  { value: "standard", label: "Standard", multiplier: 1, description: "Quality essentials" },
-  { value: "premium", label: "Premium", multiplier: 1.4, description: "Enhanced presentation" },
-  { value: "luxury", label: "Luxury", multiplier: 2, description: "Full white-glove service" },
-];
+  const baseTotal = event.baseRate * tierData.multiplier * guests;
+  const breakdown: { label: string; amount: number }[] = [
+    { label: `${event.label} × ${guests} pax (${tierData.label})`, amount: Math.round(baseTotal) },
+  ];
 
-function computeEstimate(type: string, guests: number, tier: string): { min: number; max: number } | null {
-  const event = eventTypes.find((e) => e.value === type);
-  const tierData = tiers.find((t) => t.value === tier);
-  if (!event || !tierData || !guests) return null;
-  const base = event.baseRate * tierData.multiplier * guests;
-  return { min: Math.round(base * 0.9), max: Math.round(base * 1.1) };
+  let addOnTotal = 0;
+  for (const id of addOns) {
+    const ao = ADD_ONS.find((a) => a.id === id);
+    if (!ao) continue;
+    const amount =
+      (ao.pricePerPax ? ao.pricePerPax * guests : 0) +
+      (ao.priceFixed ?? 0);
+    addOnTotal += amount;
+    breakdown.push({ label: ao.label, amount });
+  }
+
+  const subtotal = baseTotal + addOnTotal;
+  return {
+    min: Math.round(subtotal * 0.92),
+    max: Math.round(subtotal * 1.1),
+    breakdown,
+  };
 }
 
-function formatMYR(amount: number) {
-  return new Intl.NumberFormat("en-MY", { style: "currency", currency: "MYR", maximumFractionDigits: 0 }).format(amount);
+function formatMYR(n: number) {
+  return new Intl.NumberFormat("en-MY", {
+    style: "currency", currency: "MYR", maximumFractionDigits: 0,
+  }).format(n);
 }
+
+// ── COMPONENT ─────────────────────────────────────────────────────────────
 
 export default function QuoteCalculator() {
-  const [submitted, setSubmitted] = useState(false);
-  const [estimate, setEstimate] = useState<{ min: number; max: number } | null>(null);
+  const [eventType, setEventType]     = useState<string>("");
+  const [guests, setGuests]           = useState<number>(50);
+  const [tier, setTier]               = useState<string>("standard");
+  const [addOns, setAddOns]           = useState<AddOnId[]>([]);
+  const [unlocked, setUnlocked]       = useState(false);
+  const [submitted, setSubmitted]     = useState(false);
+  const [showAddOns, setShowAddOns]   = useState(false);
+
+  const estimate = eventType ? computeEstimate(eventType, guests, tier, addOns) : null;
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
-  } = useForm<QuoteFormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { packageTier: "standard" },
-  });
+  } = useForm<ContactData>({ resolver: zodResolver(contactSchema) });
 
-  const watchedType = watch("eventType");
-  const watchedGuests = watch("guestCount");
-  const watchedTier = watch("packageTier");
-
-  // Live estimate
-  const liveEstimate =
-    watchedType && watchedGuests >= 10
-      ? computeEstimate(watchedType, watchedGuests, watchedTier)
-      : null;
-
-  async function onSubmit(data: QuoteFormData) {
-    // In production: send to API route / CRM
-    await new Promise((r) => setTimeout(r, 800));
-    setEstimate(computeEstimate(data.eventType, data.guestCount, data.packageTier));
-    setSubmitted(true);
-  }
-
-  if (submitted && estimate) {
-    return (
-      <div className="bg-white rounded-3xl shadow-sm border border-stone-200 p-8 md:p-10 text-center">
-        <CheckCircle className="w-14 h-14 text-green-500 mx-auto mb-5" />
-        <h2 className="font-serif text-2xl font-bold text-[#1c1c1e] mb-2">
-          Your Estimate is Ready!
-        </h2>
-        <p className="text-[#6b6560] mb-6">
-          Based on your event details, here&apos;s your indicative quote:
-        </p>
-        <div className="bg-[#faf8f4] rounded-2xl p-6 mb-6">
-          <p className="text-sm text-[#6b6560] mb-1">Estimated Total</p>
-          <p className="font-serif text-4xl font-bold text-[#b8932a]">
-            {formatMYR(estimate.min)} – {formatMYR(estimate.max)}
-          </p>
-          <p className="text-xs text-stone-500 mt-2">
-            Final pricing subject to menu selection and site assessment
-          </p>
-        </div>
-        <p className="text-sm text-[#6b6560] mb-6">
-          Our team will reach out within 24 hours with a full personalised proposal.
-        </p>
-        <a
-          href="/"
-          className="inline-block px-8 py-3 bg-[#b8932a] text-white font-semibold rounded-full hover:bg-[#8a6d1e] transition-colors"
-        >
-          Back to Home
-        </a>
-      </div>
+  function toggleAddOn(id: AddOnId) {
+    setAddOns((prev) =>
+      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
     );
   }
 
+  async function onUnlock(data: ContactData) {
+    // In production: POST to /api/quote-lead with data + estimate
+    await new Promise((r) => setTimeout(r, 700));
+    console.log("Lead captured:", data);
+    setUnlocked(true);
+    setSubmitted(true);
+  }
+
+  const corporateTypes = EVENT_TYPES.filter((e) => e.category === "corporate");
+  const privateTypes   = EVENT_TYPES.filter((e) => e.category === "private");
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-white rounded-3xl shadow-sm border border-stone-200 p-7 md:p-10 space-y-7"
-    >
-      {/* Live Estimate Banner */}
-      {liveEstimate && (
-        <div className="bg-[#faf8f4] border border-[#b8932a]/30 rounded-2xl p-4 flex items-center justify-between">
+    <div className="space-y-6">
+      {/* Live estimate banner */}
+      {estimate && (
+        <div className="bg-[#1c1c1e] rounded-2xl p-5 flex items-center justify-between gap-4 shadow-xl">
           <div className="flex items-center gap-3">
-            <Calculator className="w-5 h-5 text-[#b8932a]" />
-            <span className="text-sm text-[#6b6560]">Live estimate:</span>
+            <Calculator className="w-5 h-5 text-[#b8932a] flex-shrink-0" />
+            <div>
+              <p className="text-white text-sm font-semibold">Live Estimate</p>
+              <p className="text-stone-400 text-xs">Updates as you choose</p>
+            </div>
           </div>
-          <span className="font-serif font-bold text-lg text-[#b8932a]">
-            {formatMYR(liveEstimate.min)} – {formatMYR(liveEstimate.max)}
-          </span>
+          <div className="text-right">
+            <p className="font-serif font-bold text-xl md:text-2xl text-[#b8932a]">
+              {formatMYR(estimate.min)} – {formatMYR(estimate.max)}
+            </p>
+            <p className="text-[10px] text-stone-500">Indicative. Unlock for detailed breakdown.</p>
+          </div>
         </div>
       )}
 
-      {/* Event Type */}
-      <div>
-        <label className="block text-sm font-semibold text-[#1c1c1e] mb-3">
-          Event Type <span className="text-rose-500">*</span>
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          {eventTypes.map((type) => (
-            <label
-              key={type.value}
-              className={cn(
-                "flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all text-sm",
-                watchedType === type.value
-                  ? "border-[#b8932a] bg-[#b8932a]/5 text-[#1c1c1e] font-medium"
-                  : "border-stone-200 text-stone-600 hover:border-stone-300"
-              )}
-            >
-              <input
-                type="radio"
-                value={type.value}
-                {...register("eventType")}
-                className="sr-only"
-              />
-              <span
-                className={cn(
-                  "w-2.5 h-2.5 rounded-full flex-shrink-0 border",
-                  watchedType === type.value
-                    ? "bg-[#b8932a] border-[#b8932a]"
-                    : "border-stone-300"
-                )}
-              />
-              {type.label}
-            </label>
-          ))}
+      <div className="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+        {/* Step 1 — Event Type */}
+        <div className="p-7 border-b border-stone-100">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-7 h-7 rounded-full bg-[#b8932a] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <h3 className="font-semibold text-[#1c1c1e]">Event Type</h3>
+            <span lang="ms" className="text-xs text-stone-400 italic">Jenis Acara</span>
+          </div>
+          <div className="space-y-3">
+            <div>
+              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">Corporate</p>
+              <div className="grid grid-cols-2 gap-2">
+                {corporateTypes.map((t) => (
+                  <label key={t.value} className={cn(
+                    "flex flex-col p-3 rounded-xl border cursor-pointer transition-all",
+                    eventType === t.value
+                      ? "border-[#b8932a] bg-[#b8932a]/5"
+                      : "border-stone-200 hover:border-stone-300"
+                  )}>
+                    <input type="radio" name="eventType" value={t.value}
+                      checked={eventType === t.value}
+                      onChange={() => setEventType(t.value)}
+                      className="sr-only"
+                    />
+                    <span className={cn("text-sm font-medium leading-tight", eventType === t.value ? "text-[#b8932a]" : "text-[#1c1c1e]")}>
+                      {t.label}
+                    </span>
+                    <span lang="ms" className="text-[10px] text-stone-400 italic mt-0.5">{t.labelMs}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-2">Private</p>
+              <div className="grid grid-cols-2 gap-2">
+                {privateTypes.map((t) => (
+                  <label key={t.value} className={cn(
+                    "flex flex-col p-3 rounded-xl border cursor-pointer transition-all",
+                    eventType === t.value
+                      ? "border-[#b8932a] bg-[#b8932a]/5"
+                      : "border-stone-200 hover:border-stone-300"
+                  )}>
+                    <input type="radio" name="eventType" value={t.value}
+                      checked={eventType === t.value}
+                      onChange={() => setEventType(t.value)}
+                      className="sr-only"
+                    />
+                    <span className={cn("text-sm font-medium leading-tight", eventType === t.value ? "text-[#b8932a]" : "text-[#1c1c1e]")}>
+                      {t.label}
+                    </span>
+                    <span lang="ms" className="text-[10px] text-stone-400 italic mt-0.5">{t.labelMs}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-        {errors.eventType && (
-          <p className="text-rose-500 text-xs mt-1">{errors.eventType.message}</p>
-        )}
-      </div>
 
-      {/* Guest Count */}
-      <div>
-        <label htmlFor="guestCount" className="block text-sm font-semibold text-[#1c1c1e] mb-2">
-          Number of Guests <span className="text-rose-500">*</span>
-        </label>
-        <input
-          id="guestCount"
-          type="number"
-          min={10}
-          max={2000}
-          placeholder="e.g. 100"
-          {...register("guestCount", { valueAsNumber: true })}
-          className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/20 outline-none transition-all text-[#1c1c1e]"
-        />
-        {errors.guestCount && (
-          <p className="text-rose-500 text-xs mt-1">{errors.guestCount.message}</p>
-        )}
-      </div>
+        {/* Step 2 — Guests */}
+        <div className="p-7 border-b border-stone-100">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-7 h-7 rounded-full bg-[#b8932a] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <h3 className="font-semibold text-[#1c1c1e]">Number of Guests</h3>
+            <span lang="ms" className="text-xs text-stone-400 italic">Bilangan Tetamu</span>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-3xl font-serif font-bold text-[#b8932a]">{guests}</span>
+              <span className="text-sm text-stone-500">pax</span>
+            </div>
+            <input
+              type="range"
+              min={20}
+              max={1000}
+              step={10}
+              value={guests}
+              onChange={(e) => setGuests(Number(e.target.value))}
+              className="w-full h-2 bg-stone-200 rounded-full appearance-none cursor-pointer accent-[#b8932a]"
+            />
+            <div className="flex justify-between text-xs text-stone-400 mt-2">
+              <span>20</span><span>500</span><span>1,000+</span>
+            </div>
+            <p className="text-xs text-stone-400 mt-2">Need 1,000+ pax? <a href="/contact" className="text-[#b8932a] underline-offset-2 hover:underline">Contact us directly</a>.</p>
+          </div>
+        </div>
 
-      {/* Package Tier */}
-      <div>
-        <label className="block text-sm font-semibold text-[#1c1c1e] mb-3">
-          Package Tier <span className="text-rose-500">*</span>
-        </label>
-        <div className="grid grid-cols-3 gap-3">
-          {tiers.map((tier) => (
-            <label
-              key={tier.value}
-              className={cn(
+        {/* Step 3 — Package Tier */}
+        <div className="p-7 border-b border-stone-100">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-7 h-7 rounded-full bg-[#b8932a] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <h3 className="font-semibold text-[#1c1c1e]">Package Tier</h3>
+            <span lang="ms" className="text-xs text-stone-400 italic">Peringkat Pakej</span>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {PACKAGE_TIERS.map((t) => (
+              <label key={t.value} className={cn(
                 "p-4 rounded-xl border cursor-pointer text-center transition-all",
-                watchedTier === tier.value
-                  ? "border-[#b8932a] bg-[#b8932a]/5"
-                  : "border-stone-200 hover:border-stone-300"
+                tier === t.value ? "border-[#b8932a] bg-[#b8932a]/5" : "border-stone-200 hover:border-stone-300"
+              )}>
+                <input type="radio" name="tier" value={t.value}
+                  checked={tier === t.value}
+                  onChange={() => setTier(t.value)}
+                  className="sr-only"
+                />
+                <p className={cn("font-bold text-sm", tier === t.value ? "text-[#b8932a]" : "text-[#1c1c1e]")}>
+                  {t.label}
+                </p>
+                <p lang="ms" className="text-[10px] text-stone-400 italic">{t.labelMs}</p>
+                <p className="text-[10px] text-stone-500 mt-1 leading-tight">{t.description}</p>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 4 — Add-ons */}
+        <div className="p-7 border-b border-stone-100">
+          <button
+            type="button"
+            onClick={() => setShowAddOns(!showAddOns)}
+            className="flex items-center justify-between w-full"
+          >
+            <div className="flex items-center gap-3">
+              <span className="w-7 h-7 rounded-full bg-[#b8932a] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+              <h3 className="font-semibold text-[#1c1c1e]">Add-ons</h3>
+              <span lang="ms" className="text-xs text-stone-400 italic">Tambahan</span>
+              {addOns.length > 0 && (
+                <span className="text-xs bg-[#b8932a] text-white px-2 py-0.5 rounded-full font-semibold">
+                  {addOns.length} selected
+                </span>
               )}
-            >
-              <input
-                type="radio"
-                value={tier.value}
-                {...register("packageTier")}
-                className="sr-only"
-              />
-              <p className={cn("font-semibold text-sm", watchedTier === tier.value ? "text-[#b8932a]" : "text-[#1c1c1e]")}>
-                {tier.label}
-              </p>
-              <p className="text-xs text-stone-500 mt-0.5">{tier.description}</p>
-            </label>
-          ))}
+            </div>
+            {showAddOns ? <ChevronUp className="w-4 h-4 text-stone-400" /> : <ChevronDown className="w-4 h-4 text-stone-400" />}
+          </button>
+
+          {showAddOns && (
+            <div className="mt-5 grid sm:grid-cols-2 gap-3">
+              {ADD_ONS.map((ao) => {
+                const isSelected = addOns.includes(ao.id as AddOnId);
+                const price = ao.priceFixed
+                  ? `+${formatMYR(ao.priceFixed)}${ao.pricePerPax ? ` + ${formatMYR(ao.pricePerPax)}/pax` : ""}`
+                  : ao.pricePerPax ? `+${formatMYR(ao.pricePerPax)}/pax` : "";
+                return (
+                  <label key={ao.id} className={cn(
+                    "flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all",
+                    isSelected ? "border-[#b8932a] bg-[#b8932a]/5" : "border-stone-200 hover:border-stone-300"
+                  )}>
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleAddOn(ao.id as AddOnId)}
+                      className="mt-0.5 accent-[#b8932a] w-4 h-4 flex-shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <p className={cn("text-sm font-medium leading-tight", isSelected ? "text-[#b8932a]" : "text-[#1c1c1e]")}>
+                        {ao.label}
+                      </p>
+                      <p lang="ms" className="text-[10px] text-stone-400 italic">{ao.labelMs}</p>
+                      <p className="text-[10px] text-stone-500 mt-0.5">{ao.description}</p>
+                      <p className="text-xs font-semibold text-[#b8932a] mt-1">{price}</p>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Unlock Gate */}
+        <div className="p-7">
+          {!submitted ? (
+            <>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-7 h-7 rounded-full bg-stone-200 text-stone-500 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  <Lock className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[#1c1c1e]">Unlock Detailed Proposal</h3>
+                  <p className="text-xs text-stone-500">Enter your details to see the full cost breakdown and receive a proposal within 24hrs.</p>
+                </div>
+              </div>
+
+              {!estimate && (
+                <div className="bg-stone-50 border border-dashed border-stone-300 rounded-xl p-4 text-center mb-4">
+                  <p className="text-sm text-stone-500">Select an event type above to see your live estimate</p>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit(onUnlock)} className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Your Name *"
+                  {...register("name")}
+                  className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/15 outline-none text-sm text-[#1c1c1e] placeholder:text-stone-400"
+                />
+                {errors.name && <p className="text-rose-500 text-xs">{errors.name.message}</p>}
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Email Address *"
+                      {...register("email")}
+                      className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/15 outline-none text-sm text-[#1c1c1e] placeholder:text-stone-400"
+                    />
+                    {errors.email && <p className="text-rose-500 text-xs mt-1">{errors.email.message}</p>}
+                  </div>
+                  <div>
+                    <input
+                      type="tel"
+                      placeholder="Phone / WhatsApp *"
+                      {...register("phone")}
+                      className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/15 outline-none text-sm text-[#1c1c1e] placeholder:text-stone-400"
+                    />
+                    {errors.phone && <p className="text-rose-500 text-xs mt-1">{errors.phone.message}</p>}
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !eventType}
+                  className="w-full py-4 bg-[#b8932a] text-white font-semibold rounded-full hover:bg-[#8a6d1e] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                >
+                  {isSubmitting ? (
+                    "Preparing your proposal..."
+                  ) : (
+                    <>
+                      <Unlock className="w-4 h-4" />
+                      Unlock My Detailed Proposal
+                    </>
+                  )}
+                </button>
+                <p className="text-center text-xs text-stone-400">
+                  No spam. We'll contact you within 24 hours.
+                </p>
+              </form>
+            </>
+          ) : (
+            /* ── UNLOCKED STATE ── */
+            <div className="space-y-5">
+              <div className="flex items-center gap-3 text-emerald-600">
+                <CheckCircle className="w-6 h-6" />
+                <div>
+                  <p className="font-semibold">Proposal Unlocked!</p>
+                  <p className="text-sm text-stone-500">Our team will reach out within 24 hours.</p>
+                </div>
+              </div>
+
+              {estimate && (
+                <div className="bg-[#faf8f4] rounded-2xl p-5 border border-stone-200">
+                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wide mb-3">
+                    Your Detailed Breakdown
+                  </p>
+                  {estimate.breakdown.map((line) => (
+                    <div key={line.label} className="flex justify-between items-center py-2 border-b border-stone-100 last:border-0 text-sm">
+                      <span className="text-stone-600">{line.label}</span>
+                      <span className="font-semibold text-[#1c1c1e]">{formatMYR(line.amount)}</span>
+                    </div>
+                  ))}
+                  <div className="flex justify-between items-center pt-3 mt-1">
+                    <span className="font-bold text-[#1c1c1e]">Estimated Total</span>
+                    <span className="font-serif font-bold text-[#b8932a] text-lg">
+                      {formatMYR(estimate.min)} – {formatMYR(estimate.max)}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-stone-400 mt-2">
+                    Final pricing subject to menu selection and site visit. Inclusive of setup & teardown.
+                  </p>
+                </div>
+              )}
+
+              <a
+                href="/thank-you"
+                className="block w-full py-3.5 text-center border border-[#b8932a] text-[#b8932a] font-semibold rounded-full hover:bg-[#b8932a]/5 transition-colors"
+              >
+                What happens next? <ArrowRight className="inline w-3.5 h-3.5 ml-1" />
+              </a>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Event Date */}
-      <div>
-        <label htmlFor="eventDate" className="block text-sm font-semibold text-[#1c1c1e] mb-2">
-          Event Date <span className="text-rose-500">*</span>
-        </label>
-        <input
-          id="eventDate"
-          type="date"
-          {...register("eventDate")}
-          className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/20 outline-none transition-all text-[#1c1c1e]"
-        />
-        {errors.eventDate && (
-          <p className="text-rose-500 text-xs mt-1">{errors.eventDate.message}</p>
-        )}
-      </div>
-
-      {/* Contact Details */}
-      <div className="space-y-4">
-        <p className="text-sm font-semibold text-[#1c1c1e]">Your Contact Details</p>
-        <input
-          type="text"
-          placeholder="Full Name *"
-          {...register("name")}
-          className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/20 outline-none transition-all text-[#1c1c1e] placeholder:text-stone-400"
-        />
-        {errors.name && <p className="text-rose-500 text-xs -mt-2">{errors.name.message}</p>}
-
-        <input
-          type="email"
-          placeholder="Email Address *"
-          {...register("email")}
-          className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/20 outline-none transition-all text-[#1c1c1e] placeholder:text-stone-400"
-        />
-        {errors.email && <p className="text-rose-500 text-xs -mt-2">{errors.email.message}</p>}
-
-        <input
-          type="tel"
-          placeholder="Phone Number (e.g. 012-345 6789) *"
-          {...register("phone")}
-          className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:border-[#b8932a] focus:ring-2 focus:ring-[#b8932a]/20 outline-none transition-all text-[#1c1c1e] placeholder:text-stone-400"
-        />
-        {errors.phone && <p className="text-rose-500 text-xs -mt-2">{errors.phone.message}</p>}
-      </div>
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full py-4 bg-[#b8932a] text-white font-semibold rounded-full hover:bg-[#8a6d1e] transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
-      >
-        {isSubmitting ? "Calculating..." : "Get My Quote"}
-        {!isSubmitting && <ArrowRight className="w-4 h-4" />}
-      </button>
-
-      <p className="text-center text-xs text-stone-400">
-        No payment required. Our team will follow up within 24 hours.
-      </p>
-    </form>
+    </div>
   );
 }
