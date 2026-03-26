@@ -87,6 +87,26 @@ export default function HomePage() {
       {/* ── HERO (dark cinematic — intentional contrast) ── */}
       <HeroVideo />
 
+      {/* ── TRUST BAR — below the fold, grounded data points ── */}
+      <div className="bg-[#1B1F23] border-b border-[#D4AF37]/20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#F9F7F2]/8">
+            {[
+              { value: "11 Years",  label: "In Business",         labelMs: "Dalam Perniagaan"  },
+              { value: "5,000+",    label: "Events Delivered",     labelMs: "Majlis Disiapkan"  },
+              { value: "4.9 ★",    label: "Google Rating",        labelMs: "Penilaian Google"  },
+              { value: "JAKIM",     label: "Halal Certified",      labelMs: "Bersijil Halal"    },
+            ].map((s) => (
+              <div key={s.label} className="px-6 py-5 text-center">
+                <p className="font-serif font-bold text-[#D4AF37] text-xl not-italic leading-none">{s.value}</p>
+                <p className="text-[10px] text-[#F9F7F2]/55 uppercase tracking-widest mt-1.5" style={{ fontFamily: "var(--font-montserrat)" }}>{s.label}</p>
+                <p lang="ms" className="text-[9px] text-[#F9F7F2]/30 italic mt-0.5">{s.labelMs}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── CATEGORY STRIP ── */}
       <div className="bg-white border-b border-[#1B1F23]/8">
         <div className="max-w-5xl mx-auto px-4">

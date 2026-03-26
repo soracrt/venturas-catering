@@ -28,16 +28,14 @@ export default function Header() {
   const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#F9F7F2]/95 backdrop-blur-md border-b border-[#1B1F23]/8">
-      {/* Accent top-line — colour shifts with data-theme on <html> */}
-      <div className="header-accent-line" />
-
+    /* Solid basalt — no opacity/transparency, gold bottom border */
+    <header className="section-dark sticky top-0 z-50 bg-[#1B1F23] border-b border-[#D4AF37]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-18">
 
           {/* Logo */}
           <Link href="/" className="flex flex-col leading-tight">
-            <span className="font-serif text-xl md:text-2xl font-bold tracking-[0.12em] text-[#1B1F23] uppercase not-italic">
+            <span className="font-serif text-xl md:text-2xl font-bold tracking-[0.12em] text-[#F9F7F2] uppercase not-italic">
               Venturas
             </span>
             <span
@@ -54,7 +52,7 @@ export default function Header() {
               item.children ? (
                 <div key={item.label} className="relative group">
                   <button
-                    className="flex items-center gap-1 text-xs font-semibold text-[#1B1F23]/55 hover:text-[#1B1F23] transition-colors uppercase tracking-widest"
+                    className="flex items-center gap-1 text-xs font-semibold text-[#F9F7F2]/60 hover:text-[#F9F7F2] transition-colors uppercase tracking-widest"
                     style={{ fontFamily: "var(--font-montserrat)" }}
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
@@ -64,7 +62,7 @@ export default function Header() {
                   </button>
                   <div
                     className={cn(
-                      "absolute top-full left-0 mt-3 w-52 bg-[#F9F7F2] border border-[#1B1F23]/10 overflow-hidden transition-all duration-150 shadow-lg shadow-[#1B1F23]/8",
+                      "absolute top-full left-0 mt-3 w-52 bg-[#F9F7F2] border border-[#1B1F23]/10 overflow-hidden transition-all duration-150 shadow-xl shadow-black/20",
                       servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1 pointer-events-none"
                     )}
                     onMouseEnter={() => setServicesOpen(true)}
@@ -74,7 +72,7 @@ export default function Header() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block px-5 py-3 text-xs text-[#1B1F23]/60 hover:text-[#D4AF37] hover:bg-[#1B1F23]/3 transition-colors uppercase tracking-wider"
+                        className="block px-5 py-3 text-xs text-[#1B1F23]/70 hover:text-[#D4AF37] hover:bg-[#1B1F23]/4 transition-colors uppercase tracking-wider"
                         style={{ fontFamily: "var(--font-montserrat)" }}
                       >
                         {child.label}
@@ -86,7 +84,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-xs font-semibold text-[#1B1F23]/55 hover:text-[#1B1F23] transition-colors uppercase tracking-widest"
+                  className="text-xs font-semibold text-[#F9F7F2]/60 hover:text-[#F9F7F2] transition-colors uppercase tracking-widest"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   {item.label}
@@ -95,16 +93,16 @@ export default function Header() {
             )}
           </nav>
 
-          {/* CTA */}
+          {/* Ghost CTA — outlined on dark header */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/quote" className="btn-gold text-xs py-2.5 px-5">
+            <Link href="/quote" className="btn-ghost text-xs py-2.5 px-5">
               Check Availability
             </Link>
           </div>
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-[#1B1F23]/60 hover:text-[#1B1F23] transition-colors"
+            className="md:hidden p-2 text-[#F9F7F2]/60 hover:text-[#F9F7F2] transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -115,12 +113,12 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-[#1B1F23]/8 bg-[#F9F7F2] px-4 py-5 space-y-1">
+        <div className="md:hidden border-t border-[#F9F7F2]/8 bg-[#1B1F23] px-4 py-5 space-y-1">
           {navigation.map((item) => (
             <div key={item.label}>
               <Link
                 href={item.href}
-                className="block text-sm font-semibold text-[#1B1F23]/70 uppercase tracking-widest py-2.5 hover:text-[#D4AF37] transition-colors"
+                className="block text-sm font-semibold text-[#F9F7F2]/70 uppercase tracking-widest py-2.5 hover:text-[#D4AF37] transition-colors"
                 style={{ fontFamily: "var(--font-montserrat)" }}
                 onClick={() => setMobileOpen(false)}
               >
@@ -130,7 +128,7 @@ export default function Header() {
                 <Link
                   key={child.href}
                   href={child.href}
-                  className="block pl-4 text-xs text-[#1B1F23]/60 uppercase tracking-wider py-1.5 hover:text-[#1B1F23]/70 transition-colors"
+                  className="block pl-4 text-xs text-[#F9F7F2]/40 uppercase tracking-wider py-1.5 hover:text-[#F9F7F2]/70 transition-colors"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                   onClick={() => setMobileOpen(false)}
                 >
@@ -141,7 +139,7 @@ export default function Header() {
           ))}
           <Link
             href="/quote"
-            className="block mt-4 btn-gold text-center text-xs"
+            className="block mt-4 btn-ghost text-center text-xs"
             onClick={() => setMobileOpen(false)}
           >
             Check Availability
