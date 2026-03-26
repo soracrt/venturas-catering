@@ -65,7 +65,7 @@ export default function LiveTracker({ token }: { token?: string }) {
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
         <div>
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#c9a84c] font-semibold">
+          <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4AF37] font-semibold">
             Live Logistics Tracker
           </p>
           <p className="text-white font-semibold text-sm mt-0.5">Order {data.orderId}</p>
@@ -81,8 +81,8 @@ export default function LiveTracker({ token }: { token?: string }) {
         <div className="relative bg-[#0d0d0d] border-b md:border-b-0 md:border-r border-white/5" style={{ minHeight: "320px" }}>
           {/* In production: mount a Google Map here with the driver's real-time lat/lng */}
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-            <div className="w-14 h-14 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/30 flex items-center justify-center">
-              <Truck className={`w-6 h-6 text-[#c9a84c] ${isLive ? "animate-bounce" : ""}`} />
+            <div className="w-14 h-14 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center">
+              <Truck className={`w-6 h-6 text-[#D4AF37] ${isLive ? "animate-bounce" : ""}`} />
             </div>
             <div className="text-center">
               <p className="text-white font-semibold">{data.distanceLeft} away</p>
@@ -92,7 +92,7 @@ export default function LiveTracker({ token }: { token?: string }) {
             {/* Animated route line placeholder */}
             <div className="w-40 h-px relative overflow-hidden bg-stone-800 mt-2">
               <div
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#c9a84c] to-[#e2c175]"
+                className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#D4AF37] to-[#e2c175]"
                 style={{ width: "65%", transition: "width 2s ease" }}
               />
             </div>
@@ -146,20 +146,20 @@ export default function LiveTracker({ token }: { token?: string }) {
               </div>
               <a
                 href={`tel:${data.driverPhone.replace(/\s/g, "")}`}
-                className="w-9 h-9 bg-[#c9a84c]/10 border border-[#c9a84c]/30 flex items-center justify-center hover:bg-[#c9a84c]/20 transition-colors"
+                className="w-9 h-9 bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center hover:bg-[#D4AF37]/20 transition-colors"
               >
-                <Phone className="w-3.5 h-3.5 text-[#c9a84c]" />
+                <Phone className="w-3.5 h-3.5 text-[#D4AF37]" />
               </a>
             </div>
           </div>
 
           {/* ETA */}
-          <div className="bg-[#c9a84c]/8 border border-[#c9a84c]/20 p-4 flex items-center justify-between">
+          <div className="bg-[#D4AF37]/8 border border-[#D4AF37]/20 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#c9a84c]" />
+              <Clock className="w-4 h-4 text-[#D4AF37]" />
               <span className="text-sm text-stone-300">Estimated Arrival</span>
             </div>
-            <span className="font-serif font-bold text-[#c9a84c] text-lg">{data.eta}</span>
+            <span className="font-serif font-bold text-[#D4AF37] text-lg">{data.eta}</span>
           </div>
 
           <p className="text-[10px] text-stone-700">Last updated {data.lastUpdate}</p>
@@ -177,18 +177,18 @@ export default function LiveTracker({ token }: { token?: string }) {
               <div key={step.key} className="flex items-center flex-1">
                 <div className="flex flex-col items-center gap-1">
                   <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
-                    active  ? "bg-[#c9a84c] border-[#c9a84c]" :
-                    done    ? "bg-[#c9a84c]/20 border-[#c9a84c]/50" :
+                    active  ? "bg-[#D4AF37] border-[#D4AF37]" :
+                    done    ? "bg-[#D4AF37]/20 border-[#D4AF37]/50" :
                               "bg-[#141414] border-white/10"
                   }`}>
-                    <Icon className={`w-3.5 h-3.5 ${active || done ? "text-[#c9a84c]" : "text-stone-600"}`} />
+                    <Icon className={`w-3.5 h-3.5 ${active || done ? "text-[#D4AF37]" : "text-stone-600"}`} />
                   </div>
-                  <p className={`text-[9px] text-center hidden sm:block ${active ? "text-[#c9a84c] font-semibold" : "text-stone-600"}`}>
+                  <p className={`text-[9px] text-center hidden sm:block ${active ? "text-[#D4AF37] font-semibold" : "text-stone-600"}`}>
                     {step.label}
                   </p>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div className={`flex-1 h-px mx-1 ${i < currentStep ? "bg-[#c9a84c]/40" : "bg-white/5"}`} />
+                  <div className={`flex-1 h-px mx-1 ${i < currentStep ? "bg-[#D4AF37]/40" : "bg-white/5"}`} />
                 )}
               </div>
             );

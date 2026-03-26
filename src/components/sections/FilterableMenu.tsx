@@ -36,8 +36,8 @@ export default function FilterableMenu() {
             className={cn(
               "group flex flex-col items-center px-5 py-2.5 rounded-full border text-sm font-semibold transition-all duration-200",
               active === f.value
-                ? "bg-[#b8932a] border-[#b8932a] text-white shadow-md shadow-[#b8932a]/25"
-                : "bg-white border-stone-200 text-stone-600 hover:border-[#b8932a] hover:text-[#b8932a]"
+                ? "bg-[#D4AF37] border-[#D4AF37] text-white shadow-md shadow-[#D4AF37]/25"
+                : "bg-white border-stone-200 text-stone-600 hover:border-[#D4AF37] hover:text-[#D4AF37]"
             )}
           >
             <span>{f.label}</span>
@@ -64,7 +64,7 @@ export default function FilterableMenu() {
         {filtered.map((item) => (
           <div
             key={item.id}
-            className="menu-card group relative bg-white rounded-2xl border border-stone-200 overflow-hidden hover:border-[#b8932a] hover:shadow-xl transition-all duration-300 cursor-pointer"
+            className="menu-card group relative bg-white rounded-2xl border border-stone-200 overflow-hidden hover:border-[#D4AF37] hover:shadow-xl transition-all duration-300 cursor-pointer"
           >
             {/* Image placeholder — replace with <Image> when assets are ready */}
             <div className="relative h-52 bg-gradient-to-br from-stone-100 to-stone-200 overflow-hidden">
@@ -73,9 +73,9 @@ export default function FilterableMenu() {
               </div>
 
               {/* Ingredient reveal overlay */}
-              <div className="menu-card-overlay absolute inset-0 bg-[#1c1c1e]/95 p-5 flex flex-col justify-between">
+              <div className="menu-card-overlay absolute inset-0 bg-[#1B1F23]/95 p-5 flex flex-col justify-between">
                 <div>
-                  <p className="text-[#b8932a] text-xs font-semibold uppercase tracking-wide mb-3">
+                  <p className="text-[#D4AF37] text-xs font-semibold uppercase tracking-wide mb-3">
                     Ingredients
                   </p>
                   <div className="flex flex-wrap gap-1.5">
@@ -101,7 +101,7 @@ export default function FilterableMenu() {
               {/* Badges */}
               <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                 {item.popular && (
-                  <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-[#b8932a] px-2 py-0.5 rounded-full">
+                  <span className="flex items-center gap-1 text-[10px] font-bold text-white bg-[#D4AF37] px-2 py-0.5 rounded-full">
                     <Sparkles className="w-2.5 h-2.5" /> Popular
                   </span>
                 )}
@@ -122,7 +122,7 @@ export default function FilterableMenu() {
             <div className="p-5">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div>
-                  <h3 className="font-semibold text-[#1c1c1e] leading-tight">{item.name}</h3>
+                  <h3 className="font-semibold text-[#1B1F23] leading-tight">{item.name}</h3>
                   {item.nameMs && (
                     <p lang="ms" className="text-xs text-stone-400 italic mt-0.5">
                       {item.nameMs}
@@ -131,13 +131,13 @@ export default function FilterableMenu() {
                 </div>
                 {item.priceFrom && (
                   <div className="text-right flex-shrink-0">
-                    <span className="text-[#b8932a] font-bold text-sm">{item.priceFrom}</span>
+                    <span className="text-[#D4AF37] font-bold text-sm">{item.priceFrom}</span>
                     <p className="text-[10px] text-stone-400">/pax</p>
                   </div>
                 )}
               </div>
 
-              <p className="text-[#6b6560] text-xs leading-relaxed mb-3 line-clamp-2">
+              <p className="text-[#1B1F23] text-xs leading-relaxed mb-3 line-clamp-2">
                 {item.description}
               </p>
 
@@ -172,17 +172,17 @@ export default function FilterableMenu() {
 
       {/* Request custom menu CTA */}
       <div className="mt-16 bg-[#faf8f4] rounded-3xl p-8 md:p-12 text-center border border-stone-200">
-        <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#1c1c1e] mb-3">
+        <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#1B1F23] mb-3">
           Don't See What You Need?
         </h2>
-        <p className="text-[#6b6560] mb-7 max-w-lg mx-auto">
+        <p className="text-[#1B1F23] mb-7 max-w-lg mx-auto">
           Every menu is fully customisable. Tell us your preferences, dietary requirements, and
           event theme — our chef will design something bespoke.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/quote"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#b8932a] text-white font-semibold rounded-full hover:bg-[#8a6d1e] transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#D4AF37] text-white font-semibold rounded-full hover:bg-[#A8892A] transition-colors"
           >
             Request Custom Menu <ArrowRight className="w-4 h-4" />
           </Link>
@@ -190,7 +190,7 @@ export default function FilterableMenu() {
             href="https://wa.me/60123456789?text=Hi%20Venturas!%20I%20need%20a%20custom%20menu%20for%20my%20event."
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-stone-300 text-[#1c1c1e] font-semibold rounded-full hover:bg-stone-100 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-stone-300 text-[#1B1F23] font-semibold rounded-full hover:bg-stone-100 transition-colors"
           >
             WhatsApp the Chef
           </a>

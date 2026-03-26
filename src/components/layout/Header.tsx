@@ -24,23 +24,23 @@ const navigation = [
 ];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen]   = useState(false);
+  const [mobileOpen, setMobileOpen]     = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#080808]/95 backdrop-blur-md border-b border-white/5">
+    <header className="sticky top-0 z-50 bg-[#F9F7F2]/95 backdrop-blur-md border-b border-[#1B1F23]/8">
       {/* Gold top-line */}
-      <div className="h-px bg-gradient-to-r from-[#c9a84c] via-[#e2c175] to-transparent" />
+      <div className="h-px bg-gradient-to-r from-[#D4AF37] via-[#E8CC6A] to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-18">
 
           {/* Logo */}
           <Link href="/" className="flex flex-col leading-tight">
-            <span className="font-serif text-xl md:text-2xl font-bold tracking-[0.12em] text-white uppercase">
+            <span className="font-serif text-xl md:text-2xl font-bold tracking-[0.12em] text-[#1B1F23] uppercase not-italic">
               Venturas
             </span>
-            <span className="text-[9px] tracking-[0.35em] uppercase text-[#c9a84c] font-semibold -mt-0.5">
+            <span className="text-[9px] tracking-[0.35em] uppercase text-[#D4AF37] font-semibold -mt-0.5" style={{ fontFamily: "var(--font-montserrat)" }}>
               Catering
             </span>
           </Link>
@@ -51,7 +51,8 @@ export default function Header() {
               item.children ? (
                 <div key={item.label} className="relative group">
                   <button
-                    className="flex items-center gap-1 text-xs font-semibold text-stone-400 hover:text-white transition-colors uppercase tracking-widest"
+                    className="flex items-center gap-1 text-xs font-semibold text-[#1B1F23]/55 hover:text-[#1B1F23] transition-colors uppercase tracking-widest"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
                   >
@@ -60,7 +61,7 @@ export default function Header() {
                   </button>
                   <div
                     className={cn(
-                      "absolute top-full left-0 mt-3 w-52 bg-[#0e0e0e] border border-white/8 overflow-hidden transition-all duration-150",
+                      "absolute top-full left-0 mt-3 w-52 bg-[#F9F7F2] border border-[#1B1F23]/10 overflow-hidden transition-all duration-150 shadow-lg shadow-[#1B1F23]/8",
                       servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1 pointer-events-none"
                     )}
                     onMouseEnter={() => setServicesOpen(true)}
@@ -70,7 +71,8 @@ export default function Header() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block px-5 py-3 text-xs text-stone-400 hover:text-[#c9a84c] hover:bg-white/3 transition-colors uppercase tracking-wider"
+                        className="block px-5 py-3 text-xs text-[#1B1F23]/60 hover:text-[#D4AF37] hover:bg-[#1B1F23]/3 transition-colors uppercase tracking-wider"
+                        style={{ fontFamily: "var(--font-montserrat)" }}
                       >
                         {child.label}
                       </Link>
@@ -81,7 +83,8 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-xs font-semibold text-stone-400 hover:text-white transition-colors uppercase tracking-widest"
+                  className="text-xs font-semibold text-[#1B1F23]/55 hover:text-[#1B1F23] transition-colors uppercase tracking-widest"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   {item.label}
                 </Link>
@@ -98,7 +101,7 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-stone-400 hover:text-white transition-colors"
+            className="md:hidden p-2 text-[#1B1F23]/60 hover:text-[#1B1F23] transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -109,12 +112,13 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/5 bg-[#080808] px-4 py-5 space-y-1">
+        <div className="md:hidden border-t border-[#1B1F23]/8 bg-[#F9F7F2] px-4 py-5 space-y-1">
           {navigation.map((item) => (
             <div key={item.label}>
               <Link
                 href={item.href}
-                className="block text-sm font-semibold text-stone-300 uppercase tracking-widest py-2.5 hover:text-[#c9a84c] transition-colors"
+                className="block text-sm font-semibold text-[#1B1F23]/70 uppercase tracking-widest py-2.5 hover:text-[#D4AF37] transition-colors"
+                style={{ fontFamily: "var(--font-montserrat)" }}
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
@@ -123,7 +127,8 @@ export default function Header() {
                 <Link
                   key={child.href}
                   href={child.href}
-                  className="block pl-4 text-xs text-stone-600 uppercase tracking-wider py-1.5 hover:text-stone-300 transition-colors"
+                  className="block pl-4 text-xs text-[#1B1F23]/40 uppercase tracking-wider py-1.5 hover:text-[#1B1F23]/70 transition-colors"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
                   onClick={() => setMobileOpen(false)}
                 >
                   {child.label}

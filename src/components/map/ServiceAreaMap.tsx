@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 import { EVENT_PINS, VENUE_GUIDES, VENTURAS_MAP_STYLE, VENTURAS_HQ, type EventPin, type VenueGuide } from "@/lib/map-data";
 import { MapPin, Building2, Users, ArrowRight } from "lucide-react";
+import VMonogram from "@/components/ui/VMonogram";
 
 const PIN_COLORS = {
   corporate: "#3b82f6",
-  wedding:   "#c9a84c",
+  wedding:   "#D4AF37",
   private:   "#e879a0",
 };
 
@@ -62,7 +63,7 @@ export default function ServiceAreaMap() {
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 10,
-          fillColor: "#c9a84c",
+          fillColor: "#D4AF37",
           fillOpacity: 1,
           strokeColor: "#fff",
           strokeWeight: 2,
@@ -99,7 +100,7 @@ export default function ServiceAreaMap() {
             scale: 11,
             fillColor: PIN_COLORS[pin.type],
             fillOpacity: 1,
-            strokeColor: "#c9a84c",
+            strokeColor: "#D4AF37",
             strokeWeight: 2,
           });
         });
@@ -157,7 +158,7 @@ export default function ServiceAreaMap() {
         {!loaded && !error && (
           <div className="absolute inset-0 bg-[#0d0d0d] flex items-center justify-center">
             <div className="text-center">
-              <div className="w-10 h-10 border-2 border-[#c9a84c] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <div className="w-10 h-10 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <p className="text-stone-500 text-sm">Loading Venturas Impact Map…</p>
             </div>
           </div>
@@ -171,7 +172,7 @@ export default function ServiceAreaMap() {
               onClick={() => setTab(t)}
               className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all ${
                 tab === t
-                  ? "bg-[#c9a84c] text-[#080808]"
+                  ? "bg-[#D4AF37] text-[#080808]"
                   : "bg-[#080808]/80 text-stone-400 hover:text-white backdrop-blur-sm border border-white/10"
               }`}
             >
@@ -191,7 +192,7 @@ export default function ServiceAreaMap() {
               </div>
             ))}
             <div className="flex items-center gap-2 mt-1">
-              <span className="w-2.5 h-2.5 rounded-full flex-shrink-0 bg-[#c9a84c]" />
+              <span className="w-2.5 h-2.5 rounded-full flex-shrink-0 bg-[#D4AF37]" />
               <span className="text-xs text-stone-400">Venturas HQ</span>
             </div>
           </div>
@@ -199,7 +200,11 @@ export default function ServiceAreaMap() {
       </div>
 
       {/* ── SIDEBAR ── */}
-      <div className="border-t lg:border-t-0 lg:border-l border-white/5 flex flex-col" style={{ minHeight: "520px" }}>
+      <div className="border-t lg:border-t-0 lg:border-l border-[#F9F7F2]/5 bg-[#1B1F23] flex flex-col relative" style={{ minHeight: "520px" }}>
+        {/* V Monogram watermark */}
+        <div className="absolute bottom-4 right-4 pointer-events-none">
+          <VMonogram size={72} color="#D4AF37" opacity={0.08} />
+        </div>
         {selected ? (
           <EventDetail pin={selected} onClose={() => setSelected(null)} />
         ) : activeVenue ? (
@@ -215,13 +220,13 @@ export default function ServiceAreaMap() {
 function DefaultPanel({ eventCount }: { eventCount: number }) {
   return (
     <div className="p-7 flex flex-col h-full">
-      <p className="text-[9px] tracking-[0.3em] uppercase text-[#c9a84c] font-semibold mb-4">
+      <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4AF37] font-semibold mb-4">
         Impact Map
       </p>
       <h3 className="font-serif text-xl font-bold text-white mb-2">
         Venturas Across<br />the Klang Valley
       </h3>
-      <div className="w-8 h-px bg-[#c9a84c] mb-5" />
+      <div className="w-8 h-px bg-[#D4AF37] mb-5" />
       <p className="text-stone-500 text-sm leading-relaxed mb-6">
         Click any pin to see the event we delivered there — photos, pax count, and what made it special.
       </p>
@@ -251,7 +256,7 @@ function DefaultPanel({ eventCount }: { eventCount: number }) {
 function EventDetail({ pin, onClose }: { pin: EventPin; onClose: () => void }) {
   return (
     <div className="p-7 flex flex-col h-full overflow-y-auto">
-      <button onClick={onClose} className="text-[10px] text-stone-600 uppercase tracking-wider hover:text-[#c9a84c] transition-colors mb-5 text-left">
+      <button onClick={onClose} className="text-[10px] text-stone-600 uppercase tracking-wider hover:text-[#D4AF37] transition-colors mb-5 text-left">
         ← Back to map
       </button>
 
@@ -277,21 +282,21 @@ function EventDetail({ pin, onClose }: { pin: EventPin; onClose: () => void }) {
 
       <div className="space-y-2.5 text-sm">
         <div className="flex items-center gap-2 text-stone-400">
-          <Building2 className="w-3.5 h-3.5 text-[#c9a84c]" />
+          <Building2 className="w-3.5 h-3.5 text-[#D4AF37]" />
           <span>{pin.client}</span>
         </div>
         <div className="flex items-center gap-2 text-stone-400">
-          <Users className="w-3.5 h-3.5 text-[#c9a84c]" />
+          <Users className="w-3.5 h-3.5 text-[#D4AF37]" />
           <span>{pin.pax} pax</span>
         </div>
         <div className="flex items-center gap-2 text-stone-400">
-          <MapPin className="w-3.5 h-3.5 text-[#c9a84c]" />
+          <MapPin className="w-3.5 h-3.5 text-[#D4AF37]" />
           <span>{pin.area}</span>
         </div>
       </div>
 
-      <div className="mt-4 bg-[#c9a84c]/8 border border-[#c9a84c]/20 p-4">
-        <p className="text-[9px] tracking-[0.2em] uppercase text-[#c9a84c] font-semibold mb-1">What made it special</p>
+      <div className="mt-4 bg-[#D4AF37]/8 border border-[#D4AF37]/20 p-4">
+        <p className="text-[9px] tracking-[0.2em] uppercase text-[#D4AF37] font-semibold mb-1">What made it special</p>
         <p className="text-stone-300 text-sm">{pin.highlight}</p>
       </div>
 
@@ -307,7 +312,7 @@ function EventDetail({ pin, onClose }: { pin: EventPin; onClose: () => void }) {
 function VenueDetail({ venue, onClose }: { venue: VenueGuide; onClose: () => void }) {
   return (
     <div className="p-7 flex flex-col h-full overflow-y-auto">
-      <button onClick={onClose} className="text-[10px] text-stone-600 uppercase tracking-wider hover:text-[#c9a84c] transition-colors mb-5 text-left">
+      <button onClick={onClose} className="text-[10px] text-stone-600 uppercase tracking-wider hover:text-[#D4AF37] transition-colors mb-5 text-left">
         ← Back to map
       </button>
 
@@ -324,8 +329,8 @@ function VenueDetail({ venue, onClose }: { venue: VenueGuide; onClose: () => voi
           { label: "Buffet Zone",     value: venue.buffetZone },
           { label: "Parking & Access",value: venue.parkingNote },
         ].map((item) => (
-          <div key={item.label} className="border-l-2 border-[#c9a84c]/30 pl-4">
-            <p className="text-[9px] tracking-[0.2em] uppercase text-[#c9a84c] font-semibold mb-1">{item.label}</p>
+          <div key={item.label} className="border-l-2 border-[#D4AF37]/30 pl-4">
+            <p className="text-[9px] tracking-[0.2em] uppercase text-[#D4AF37] font-semibold mb-1">{item.label}</p>
             <p className="text-stone-400 text-xs leading-relaxed">{item.value}</p>
           </div>
         ))}
@@ -344,12 +349,12 @@ function VenueDetail({ venue, onClose }: { venue: VenueGuide; onClose: () => voi
 function MapFallback() {
   return (
     <div className="bg-[#0d0d0d] border border-white/8 p-8">
-      <p className="text-[9px] tracking-[0.3em] uppercase text-[#c9a84c] font-semibold mb-4">Impact Map</p>
+      <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4AF37] font-semibold mb-4">Impact Map</p>
       <h3 className="font-serif text-xl font-bold text-white mb-4">Venturas Across the Klang Valley</h3>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
         {EVENT_PINS.map((pin) => (
-          <div key={pin.id} className="bg-[#141414] border border-white/5 p-3 hover:border-[#c9a84c]/30 transition-colors">
+          <div key={pin.id} className="bg-[#141414] border border-white/5 p-3 hover:border-[#D4AF37]/30 transition-colors">
             <div className="flex items-center gap-1.5 mb-1">
               <span className="w-2 h-2 rounded-full" style={{ background: PIN_COLORS[pin.type] }} />
               <span className="text-[10px] text-stone-400 font-medium">{pin.area}</span>

@@ -91,13 +91,13 @@ export default function BentoCustomizer() {
 
       {/* ── BENTO BOX VISUAL ── */}
       <div className="lg:col-span-3 space-y-4">
-        <div className="bg-[#0d0d0d] border border-white/8 p-6">
+        <div className="card-glass p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <p className="text-[9px] tracking-[0.3em] uppercase text-[#c9a84c] font-semibold">Your Bento</p>
-              <p lang="ms" className="text-stone-600 text-[10px] italic">Kotak Bento Anda</p>
+              <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4AF37] font-semibold">Your Bento</p>
+              <p lang="ms" className="text-[#1B1F23]/35 text-[10px] italic">Kotak Bento Anda</p>
             </div>
-            <span className="text-xs text-stone-500">{filledSlots}/6 slots filled</span>
+            <span className="text-xs text-[#1B1F23]/45">{filledSlots}/6 slots filled</span>
           </div>
 
           {/* 2×3 slot grid */}
@@ -115,18 +115,18 @@ export default function BentoCustomizer() {
                     "relative aspect-square border transition-all duration-200 flex flex-col items-center justify-center gap-1 group",
                     item
                       ? isActive
-                        ? "border-[#c9a84c] bg-[#c9a84c]/8"
-                        : "border-white/10 bg-[#141414] hover:border-[#c9a84c]/50"
+                        ? "border-[#D4AF37] bg-[#D4AF37]/8"
+                        : "border-[#1B1F23]/12 bg-white/60 hover:border-[#D4AF37]/50"
                       : isActive
-                        ? "border-[#c9a84c] border-dashed bg-[#c9a84c]/5"
-                        : "border-white/8 border-dashed hover:border-[#c9a84c]/40"
+                        ? "border-[#D4AF37] border-dashed bg-[#D4AF37]/5"
+                        : "border-[#1B1F23]/8 border-dashed hover:border-[#D4AF37]/40"
                   )}
                 >
                   {item ? (
                     <>
                       <span className="text-3xl">{item.emoji}</span>
-                      <span className="text-[10px] text-stone-300 font-medium text-center px-1 leading-tight">{item.name}</span>
-                      <span lang="ms" className="text-[9px] text-stone-600 italic">{item.nameMs}</span>
+                      <span className="text-[10px] text-[#1B1F23]/80 font-medium text-center px-1 leading-tight">{item.name}</span>
+                      <span lang="ms" className="text-[9px] text-[#1B1F23]/35 italic">{item.nameMs}</span>
                       {(item.spicy || item.vegan) && (
                         <div className="flex gap-1 mt-0.5">
                           {item.spicy  && <span className="text-[8px] bg-red-900/40 text-red-400 px-1 py-0.5">🌶 Spicy</span>}
@@ -135,20 +135,20 @@ export default function BentoCustomizer() {
                       )}
                       <button
                         onClick={(e) => { e.stopPropagation(); remove(slot); }}
-                        className="absolute top-1.5 right-1.5 w-5 h-5 bg-[#080808] border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:border-red-500"
+                        className="absolute top-1.5 right-1.5 w-5 h-5 bg-[#F9F7F2] border border-[#1B1F23]/12 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:border-red-500"
                       >
-                        <X className="w-3 h-3 text-stone-400" />
+                        <X className="w-3 h-3 text-[#1B1F23]/55" />
                       </button>
                     </>
                   ) : (
                     <>
                       <span className="text-2xl opacity-30">{label.emoji}</span>
-                      <span className="text-[10px] text-stone-600">{label.en}</span>
-                      <Plus className="w-3 h-3 text-stone-700 mt-0.5" />
+                      <span className="text-[10px] text-[#1B1F23]/35">{label.en}</span>
+                      <Plus className="w-3 h-3 text-[#1B1F23]/25 mt-0.5" />
                     </>
                   )}
                   {isActive && (
-                    <div className="absolute bottom-0 left-0 right-0 h-px bg-[#c9a84c]" />
+                    <div className="absolute bottom-0 left-0 right-0 h-px bg-[#D4AF37]" />
                   )}
                 </button>
               );
@@ -156,39 +156,39 @@ export default function BentoCustomizer() {
           </div>
 
           {/* Halal badge */}
-          <div className="flex items-center gap-2 mt-4 text-xs text-stone-500">
+          <div className="flex items-center gap-2 mt-4 text-xs text-[#1B1F23]/45">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
             All items Halal certified · JAKIM compliant
           </div>
         </div>
 
         {/* Quantity + summary */}
-        <div className="bg-[#0d0d0d] border border-white/8 p-6">
+        <div className="card-glass p-6">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-semibold text-white">Number of Boxes</p>
-            <p lang="ms" className="text-[10px] text-stone-600 italic">Bilangan Kotak</p>
+            <p className="text-sm font-semibold text-[#1B1F23]">Number of Boxes</p>
+            <p lang="ms" className="text-[10px] text-[#1B1F23]/35 italic">Bilangan Kotak</p>
           </div>
           <div className="flex items-center gap-4 mb-4">
             <input
               type="range" min={MIN_BOXES} max={500} step={10}
               value={boxes}
               onChange={(e) => setBoxes(Number(e.target.value))}
-              className="flex-1 h-1.5 accent-[#c9a84c] cursor-pointer"
+              className="flex-1 h-1.5 accent-[#D4AF37] cursor-pointer"
             />
-            <span className="font-serif font-bold text-[#c9a84c] text-xl w-16 text-right">{boxes}</span>
+            <span className="font-serif font-bold text-[#D4AF37] text-xl w-16 text-right">{boxes}</span>
           </div>
-          <p className="text-xs text-stone-600 mb-5">Minimum {MIN_BOXES} boxes per order</p>
+          <p className="text-xs text-[#1B1F23]/35 mb-5">Minimum {MIN_BOXES} boxes per order</p>
 
-          <div className="space-y-2 border-t border-white/5 pt-4">
+          <div className="space-y-2 border-t border-[#1B1F23]/6 pt-4">
             <div className="flex justify-between text-sm">
-              <span className="text-stone-500">Per box</span>
-              <span className="text-white">RM {pricePerBox.toFixed(2)}</span>
+              <span className="text-[#1B1F23]/45">Per box</span>
+              <span className="text-[#1B1F23]">RM {pricePerBox.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-stone-500">× {boxes} boxes</span>
-              <span className="font-serif font-bold text-[#c9a84c] text-lg">RM {totalPrice.toFixed(0)}</span>
+              <span className="text-[#1B1F23]/45">× {boxes} boxes</span>
+              <span className="font-serif font-bold text-[#D4AF37] text-lg">RM {totalPrice.toFixed(0)}</span>
             </div>
-            <p className="text-[10px] text-stone-700 italic">Indicative. Final price confirmed on proposal.</p>
+            <p className="text-[10px] text-[#1B1F23]/25 italic">Indicative. Final price confirmed on proposal.</p>
           </div>
 
           <div className="flex gap-3 mt-5">
@@ -210,13 +210,13 @@ export default function BentoCustomizer() {
       </div>
 
       {/* ── ITEM PICKER ── */}
-      <div className="lg:col-span-2 bg-[#0d0d0d] border border-white/8 overflow-hidden">
-        <div className="p-5 border-b border-white/5">
-          <p className="text-[9px] tracking-[0.3em] uppercase text-[#c9a84c] font-semibold">
+      <div className="lg:col-span-2 card-glass overflow-hidden">
+        <div className="p-5 border-b border-[#1B1F23]/6">
+          <p className="text-[9px] tracking-[0.3em] uppercase text-[#D4AF37] font-semibold">
             {activeSlot ? `Choose ${SLOT_LABELS[activeSlot].en}` : "Select a Slot"}
           </p>
           {activeSlot && (
-            <p lang="ms" className="text-stone-600 text-[10px] italic mt-0.5">
+            <p lang="ms" className="text-[#1B1F23]/35 text-[10px] italic mt-0.5">
               {SLOT_LABELS[activeSlot].ms}
             </p>
           )}
@@ -224,7 +224,7 @@ export default function BentoCustomizer() {
 
         <div className="overflow-y-auto" style={{ maxHeight: "540px" }}>
           {!activeSlot ? (
-            <div className="p-5 text-center text-stone-600 text-sm py-12">
+            <div className="p-5 text-center text-[#1B1F23]/35 text-sm py-12">
               Click a slot on the bento box to choose your item
             </div>
           ) : (
@@ -238,22 +238,22 @@ export default function BentoCustomizer() {
                     className={cn(
                       "w-full flex items-center gap-3 p-3 text-left transition-all",
                       selected
-                        ? "bg-[#c9a84c]/10 border border-[#c9a84c]/40"
-                        : "bg-[#141414] border border-white/5 hover:border-[#c9a84c]/30"
+                        ? "bg-[#D4AF37]/10 border border-[#D4AF37]/40"
+                        : "bg-white/60 border border-[#1B1F23]/6 hover:border-[#D4AF37]/30"
                     )}
                   >
                     <span className="text-2xl flex-shrink-0">{item.emoji}</span>
                     <div className="flex-1 min-w-0">
-                      <p className={cn("text-sm font-medium leading-tight", selected ? "text-[#c9a84c]" : "text-white")}>
+                      <p className={cn("text-sm font-medium leading-tight", selected ? "text-[#D4AF37]" : "text-[#1B1F23]")}>
                         {item.name}
                       </p>
-                      <p lang="ms" className="text-[10px] text-stone-600 italic">{item.nameMs}</p>
+                      <p lang="ms" className="text-[10px] text-[#1B1F23]/35 italic">{item.nameMs}</p>
                       <div className="flex gap-1 mt-1">
                         {item.spicy && <span className="text-[8px] bg-red-900/30 text-red-400 px-1">🌶 Spicy</span>}
                         {item.vegan && <span className="text-[8px] bg-green-900/30 text-green-400 px-1">🌿 Vegan</span>}
                       </div>
                     </div>
-                    <span className="text-xs text-[#c9a84c] font-semibold flex-shrink-0">+RM {item.price.toFixed(2)}</span>
+                    <span className="text-xs text-[#D4AF37] font-semibold flex-shrink-0">+RM {item.price.toFixed(2)}</span>
                   </button>
                 );
               })}

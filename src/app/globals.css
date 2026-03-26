@@ -1,33 +1,56 @@
 @import "tailwindcss";
 
-:root {
-  --font-playfair: "Playfair Display", serif;
-  --font-inter: "Inter", sans-serif;
-  --font-noto: "Noto Sans", sans-serif;
+/* ─────────────────────────────────────────────
+   VENTURAS CATERING — "ORGANIC OPULENCE" THEME
+   ───────────────────────────────────────────── */
 
-  /* Brand palette — shifted to deep editorial black */
-  --color-gold:       #c9a84c;
-  --color-gold-light: #e2c175;
-  --color-gold-dark:  #9a7a2e;
-  --color-black:      #080808;
-  --color-charcoal:   #141414;
-  --color-surface:    #1a1a1a;
-  --color-cream:      #f8f5f0;
-  --color-muted:      #7a7570;
+:root {
+  /* Typography */
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-inter: "Inter", sans-serif;
+
+  /* Core Brand — Organic Opulence */
+  --color-basalt:     #1B1F23;  /* Primary headings, deep "ink" */
+  --color-gold:       #D4AF37;  /* Gold Saffron — CTAs, icons, premium */
+  --color-gold-dark:  #A8892A;  /* Pressed-state / shadow for 3D button */
+  --color-gold-light: #E8CC6A;  /* Hover highlight */
+  --color-ivory:      #F9F7F2;  /* Main background — "tablecloth" linen */
+  --color-ivory-dark: #EDE9E0;  /* Subtle alternating sections */
+
+  /* Service-Specific Accents */
+  --color-corporate: #4A6076;   /* Slate Blue — professionalism */
+  --color-wedding:   #B5838D;   /* Dusty Rose — romance */
+  --color-bento:     #8DAA91;   /* Zesty Sage — freshness */
+
+  /* Active accent token — overridden by data-theme wrappers */
+  --color-accent:      #D4AF37;
+  --color-accent-dark: #A8892A;
+}
+
+/* ── Service theme overrides ── */
+[data-theme="corporate"] {
+  --color-accent:      #4A6076;
+  --color-accent-dark: #3a4d5f;
+}
+[data-theme="wedding"] {
+  --color-accent:      #B5838D;
+  --color-accent-dark: #9a6b74;
+}
+[data-theme="bento"] {
+  --color-accent:      #8DAA91;
+  --color-accent-dark: #6f8e73;
 }
 
 @theme inline {
-  --font-sans:   var(--font-inter);
-  --font-serif:  var(--font-playfair);
+  --font-sans:    var(--font-inter);
+  --font-serif:   var(--font-cormorant);
+  --font-display: var(--font-montserrat);
 
+  --color-basalt:     var(--color-basalt);
   --color-gold:       var(--color-gold);
-  --color-gold-light: var(--color-gold-light);
-  --color-gold-dark:  var(--color-gold-dark);
-  --color-black:      var(--color-black);
-  --color-charcoal:   var(--color-charcoal);
-  --color-surface:    var(--color-surface);
-  --color-cream:      var(--color-cream);
-  --color-muted:      var(--color-muted);
+  --color-ivory:      var(--color-ivory);
+  --color-accent:     var(--color-accent);
 
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -43,25 +66,52 @@
     from { width: 0; }
     to   { width: 64px; }
   }
+
+  /* Animated film-grain drift */
+  @keyframes grain {
+    0%, 100% { transform: translate(0, 0) scale(1.5); }
+    20%       { transform: translate(-1%, 1%) scale(1.5); }
+    40%       { transform: translate(1%, -1%) scale(1.5); }
+    60%       { transform: translate(-1%, -1%) scale(1.5); }
+    80%       { transform: translate(1%, 1%) scale(1.5); }
+  }
 }
 
 html { scroll-behavior: smooth; }
 
-/* Bilingual Malay support */
-:lang(ms) {
-  font-family: var(--font-noto), var(--font-inter), sans-serif;
-  letter-spacing: 0.01em;
-}
-
 body {
-  background: #ffffff;
-  color: var(--color-black);
+  background: var(--color-ivory);
+  color: var(--color-basalt);
   font-family: var(--font-inter);
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Editorial heading scale ── */
-h1, h2, h3, h4 { font-family: var(--font-playfair); }
+/* ── Animated paper/grain texture overlay ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  opacity: 0.022;
+  pointer-events: none;
+  z-index: 9999;
+  animation: grain 8s steps(10) infinite;
+}
+
+/* ── Bilingual Malay support ── */
+:lang(ms) {
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* ── "Modern Heritage" heading scale ── */
+h1, h2, h3, h4 { font-family: var(--font-cormorant); }
+h1 { font-style: italic; letter-spacing: -0.02em; }
+h2 { font-style: italic; }
 
 /* ── Menu card ingredient reveal ── */
 .menu-card-overlay {
@@ -80,7 +130,7 @@ h1, h2, h3, h4 { font-family: var(--font-playfair); }
 .marquee-track { animation: marquee 40s linear infinite; }
 .marquee-track:hover { animation-play-state: paused; }
 
-/* ── Gold divider line ── */
+/* ── Gold accent divider ── */
 .gold-line::after {
   content: "";
   display: block;
@@ -90,38 +140,68 @@ h1, h2, h3, h4 { font-family: var(--font-playfair); }
   margin-top: 1rem;
 }
 
-/* ── Ghost button base ── */
+/* ── Glassmorphism card (over ivory linen) ── */
+.card-glass {
+  background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 4px 32px rgba(27, 31, 35, 0.07),
+    0 1px 4px rgba(27, 31, 35, 0.04);
+}
+
+/* ── Ghost button — light theme ── */
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #fff;
+  border: 1.5px solid rgba(27, 31, 35, 0.25);
+  color: var(--color-basalt);
   font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border-radius: 0;
+  font-family: var(--font-montserrat);
   transition: all 0.2s ease;
 }
 .btn-ghost:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.6);
+  background: rgba(27, 31, 35, 0.05);
+  border-color: rgba(27, 31, 35, 0.5);
 }
 
+/* Ghost button inside dark sections */
+.section-dark .btn-ghost {
+  border-color: rgba(249, 247, 242, 0.3);
+  color: #F9F7F2;
+}
+.section-dark .btn-ghost:hover {
+  background: rgba(249, 247, 242, 0.08);
+  border-color: rgba(249, 247, 242, 0.6);
+}
+
+/* ── Gold CTA button — pressable 3D ── */
 .btn-gold {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
   background: var(--color-gold);
-  color: #080808;
+  color: #1B1F23;
   font-weight: 700;
-  font-size: 0.875rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  border-radius: 0;
-  transition: background 0.2s ease;
+  font-family: var(--font-montserrat);
+  box-shadow: 0 4px 0 0 var(--color-gold-dark);
+  transform: translateY(0);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.btn-gold:hover { background: var(--color-gold-light); }
+.btn-gold:hover  { background: var(--color-gold-light); }
+.btn-gold:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 0 var(--color-gold-dark);
+}

@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Noto_Sans } from "next/font/google";
+import { Cormorant_Garamond, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import SchemaOrg from "@/components/seo/SchemaOrg";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
   display: "swap",
 });
@@ -15,13 +23,6 @@ const playfair = Playfair_Display({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const notoSans = Noto_Sans({
-  variable: "--font-noto",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -61,9 +62,9 @@ export default function RootLayout({
   return (
     <html
       lang="en-MY"
-      className={`${playfair.variable} ${inter.variable} ${notoSans.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${montserrat.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-white text-stone-900">
+      <body className="min-h-full flex flex-col font-sans bg-[#F9F7F2] text-[#1B1F23]">
         <SchemaOrg />
         <Header />
         <main className="flex-1">{children}</main>

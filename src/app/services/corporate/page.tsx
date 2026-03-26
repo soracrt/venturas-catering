@@ -45,17 +45,19 @@ const packages = [
 
 export default function CorporatePage() {
   return (
-    <div className="py-16 md:py-24">
+    <div data-theme="corporate" className="py-16 md:py-24 bg-[#F9F7F2]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <div className="max-w-3xl mb-16">
-          <span className="inline-block mb-3 text-xs tracking-[0.25em] uppercase text-blue-600 font-semibold bg-blue-50 px-3 py-1 rounded-full">
+          <span className="inline-block mb-3 text-xs tracking-[0.25em] uppercase text-[#4A6076] font-semibold bg-[#4A6076]/8 px-3 py-1.5" style={{ fontFamily: "var(--font-montserrat)" }}>
             For Businesses
           </span>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1c1c1e] mb-4">
+          <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1B1F23] mb-4">
             Corporate Catering
           </h1>
-          <p className="text-[#6b6560] text-lg leading-relaxed">
+          <div className="w-12 h-0.5 bg-[#4A6076] mb-5" />
+          <p className="text-[#1B1F23]/60 text-lg leading-relaxed">
             Elevate your business events with professional catering that reflects your brand&apos;s
             standards. From daily office lunches to high-profile product launches — we deliver
             consistency, quality, and reliability.
@@ -63,32 +65,33 @@ export default function CorporatePage() {
         </div>
 
         {/* Packages */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-16">
+        <div className="grid sm:grid-cols-2 gap-5 mb-16">
           {packages.map((pkg) => (
             <div
               key={pkg.id}
               id={pkg.id}
-              className="bg-white rounded-2xl border border-stone-200 p-7 hover:border-blue-300 hover:shadow-md transition-all"
+              className="card-glass p-7 hover:border-[#4A6076]/40 hover:shadow-lg transition-all"
             >
               <div className="flex justify-between items-start mb-3">
-                <h3 className="font-serif text-xl font-bold text-[#1c1c1e]">{pkg.name}</h3>
+                <h3 className="font-serif text-xl font-bold text-[#1B1F23]">{pkg.name}</h3>
                 <div className="text-right">
-                  <span className="text-[#b8932a] font-bold text-lg">From {pkg.priceFrom}</span>
-                  {pkg.perPax && <span className="text-xs text-stone-500 block">/pax</span>}
+                  <span className="text-[#D4AF37] font-bold text-lg not-italic">From {pkg.priceFrom}</span>
+                  {pkg.perPax && <span className="text-xs text-[#1B1F23]/40 block">/pax</span>}
                 </div>
               </div>
-              <p className="text-[#6b6560] text-sm mb-4">{pkg.description}</p>
+              <p className="text-[#1B1F23]/55 text-sm mb-4">{pkg.description}</p>
               <ul className="space-y-2 mb-5">
                 {pkg.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-stone-700">
-                    <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                  <li key={f} className="flex items-center gap-2 text-sm text-[#1B1F23]/65">
+                    <CheckCircle2 className="w-4 h-4 text-[#4A6076] flex-shrink-0" />
                     {f}
                   </li>
                 ))}
               </ul>
               <Link
                 href={`/quote?type=corporate&package=${pkg.id}`}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#4A6076] hover:gap-3 transition-all uppercase tracking-wider"
+                style={{ fontFamily: "var(--font-montserrat)" }}
               >
                 Get a Quote <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -96,24 +99,19 @@ export default function CorporatePage() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="bg-[#1c1c1e] text-white rounded-3xl p-10 md:p-14 text-center">
-          <h2 className="font-serif text-3xl font-bold mb-3">Ready to Discuss Your Event?</h2>
-          <p className="text-stone-400 mb-8 max-w-xl mx-auto">
+        {/* CTA — dark basalt with slate blue accent */}
+        <div className="bg-[#1B1F23] section-dark p-10 md:p-14 text-center">
+          <div className="w-12 h-0.5 bg-[#4A6076] mx-auto mb-6" />
+          <h2 className="font-serif text-3xl font-bold text-[#F9F7F2] mb-3">Ready to Discuss Your Event?</h2>
+          <p className="text-[#F9F7F2]/50 mb-8 max-w-xl mx-auto">
             Our corporate events team will respond within 24 hours with a custom proposal tailored to
             your needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/quote?type=corporate"
-              className="px-8 py-3.5 bg-[#b8932a] text-white font-semibold rounded-full hover:bg-[#8a6d1e] transition-colors"
-            >
-              Get Instant Quote
+            <Link href="/quote?type=corporate" className="btn-gold">
+              Get Instant Quote <ArrowRight className="w-3.5 h-3.5" />
             </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-3.5 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 transition-colors"
-            >
+            <Link href="/contact" className="btn-ghost">
               Contact Our Team
             </Link>
           </div>

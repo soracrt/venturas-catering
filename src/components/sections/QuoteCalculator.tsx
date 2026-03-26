@@ -177,7 +177,7 @@ export default function QuoteCalculator() {
             </div>
           </div>
           <div className="text-right">
-            <p className="font-serif font-bold text-xl md:text-2xl text-[#c9a84c]">
+            <p className="font-serif font-bold text-xl md:text-2xl text-[#D4AF37]">
               {formatMYR((totalWithTransport || estimate).min)} – {formatMYR((totalWithTransport || estimate).max)}
             </p>
             <p className="text-[10px] text-stone-500">
@@ -357,7 +357,7 @@ export default function QuoteCalculator() {
         {/* Step 5 — Venue Address (Distance Pricing) */}
         <div className="p-7 border-b border-stone-100">
           <div className="flex items-center gap-3 mb-5">
-            <span className="w-7 h-7 rounded-full bg-[#c9a84c] text-[#080808] text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span className="w-7 h-7 rounded-full bg-[#D4AF37] text-[#080808] text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
             <h3 className="font-semibold text-[#1c1c1e]">Event Venue</h3>
             <span lang="ms" className="text-xs text-stone-400 italic">Lokasi Acara</span>
             <span className="text-[10px] text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full">Auto transport fee</span>
@@ -369,16 +369,16 @@ export default function QuoteCalculator() {
               placeholder="e.g. Shah Alam Convention Centre, Subang Jaya..."
               value={venueAddress}
               onChange={(e) => handleVenueChange(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:border-[#c9a84c] focus:ring-2 focus:ring-[#c9a84c]/15 outline-none text-sm text-[#1c1c1e] placeholder:text-stone-400"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/15 outline-none text-sm text-[#1c1c1e] placeholder:text-stone-400"
             />
             {distLoading && (
-              <div className="absolute right-4 top-3.5 w-4 h-4 border-2 border-[#c9a84c] border-t-transparent rounded-full animate-spin" />
+              <div className="absolute right-4 top-3.5 w-4 h-4 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
             )}
           </div>
           {transport && (
-            <div className="mt-3 bg-[#c9a84c]/8 border border-[#c9a84c]/20 rounded-xl p-4 flex items-center justify-between">
+            <div className="mt-3 bg-[#D4AF37]/8 border border-[#D4AF37]/20 rounded-xl p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Navigation className="w-4 h-4 text-[#c9a84c]" />
+                <Navigation className="w-4 h-4 text-[#D4AF37]" />
                 <div>
                   <p className="text-sm font-semibold text-[#1c1c1e]">
                     {transport.distanceKm ? `${transport.distanceKm} km` : "Distance calculated"}
@@ -388,7 +388,7 @@ export default function QuoteCalculator() {
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-bold text-[#c9a84c]">+RM {transport.transportFee}</p>
+                <p className="font-bold text-[#D4AF37]">+RM {transport.transportFee}</p>
                 <p className="text-[10px] text-stone-500">transport</p>
               </div>
             </div>
