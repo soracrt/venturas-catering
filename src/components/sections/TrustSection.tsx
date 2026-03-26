@@ -54,8 +54,8 @@ export default function TrustSection() {
                 {/* Replace: <Image src="/images/chef.jpg" alt="Head Chef Venturas Catering Shah Alam" fill className="object-cover" /> */}
               </div>
               {/* Floating credential card */}
-              <div className="absolute -bottom-5 -right-5 bg-[#D4AF37] text-[#1B1F23] p-5 shadow-xl shadow-[#D4AF37]/30">
-                <p className="font-serif font-bold text-3xl leading-none not-italic">11+</p>
+              <div className="absolute -bottom-3 -right-3 sm:-bottom-5 sm:-right-5 bg-[#D4AF37] text-[#1B1F23] p-3 sm:p-5 shadow-xl shadow-[#D4AF37]/30">
+                <p className="font-serif font-bold text-2xl sm:text-3xl leading-none not-italic">11+</p>
                 <p className="text-xs font-bold uppercase tracking-wider mt-1 opacity-70" style={{ fontFamily: "var(--font-montserrat)" }}>Years Mastery</p>
               </div>
             </div>

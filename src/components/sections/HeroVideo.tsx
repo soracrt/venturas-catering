@@ -30,12 +30,12 @@ export default function HeroVideo() {
 
       {/* ── Left-aligned content ── */}
       <div className="relative h-full flex items-center" style={{ minHeight: "100svh" }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full py-28">
+        <div className="max-w-7xl mx-auto px-5 sm:px-12 lg:px-16 w-full py-20 sm:py-28">
           <div className="max-w-2xl">
 
             {/* Halal badge */}
             <span
-              className="inline-flex items-center gap-2 text-[10px] tracking-[0.35em] uppercase text-[#D4AF37] border border-[#D4AF37]/35 px-4 py-2 mb-10 font-semibold"
+              className="inline-flex items-center gap-2 text-[10px] tracking-[0.35em] uppercase text-[#D4AF37] border border-[#D4AF37]/35 px-4 py-2 mb-8 sm:mb-10 font-semibold"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
               <ShieldCheck className="w-3 h-3" />

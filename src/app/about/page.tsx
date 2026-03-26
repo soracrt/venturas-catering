@@ -69,7 +69,7 @@ export default function AboutPage() {
         <div
           className="absolute top-0 left-4 md:left-12 font-serif leading-none select-none pointer-events-none"
           style={{
-            fontSize: "clamp(12rem, 30vw, 22rem)",
+            fontSize: "clamp(5rem, 22vw, 22rem)",
             color: "rgba(212,175,55,0.05)",
             lineHeight: 0.85,
           }}

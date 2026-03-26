@@ -124,7 +124,7 @@ export default function BentoCustomizer() {
                 >
                   {item ? (
                     <>
-                      <span className="text-3xl">{item.emoji}</span>
+                      <span className="text-2xl sm:text-3xl">{item.emoji}</span>
                       <span className="text-[10px] text-[#1B1F23]/80 font-medium text-center px-1 leading-tight">{item.name}</span>
                       <span lang="ms" className="text-[9px] text-[#1B1F23]/35 italic">{item.nameMs}</span>
                       {(item.spicy || item.vegan) && (

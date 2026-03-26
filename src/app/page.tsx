@@ -97,10 +97,10 @@ export default function HomePage() {
               { value: "4.9 ★",    label: "Google Rating",     labelMs: "Penilaian Google" },
               { value: "JAKIM",     label: "Halal Certified",   labelMs: "Bersijil Halal"   },
             ].map((s) => (
-              <div key={s.label} className="px-6 py-10 text-center">
-                <p className="font-bold text-[#D4AF37] leading-none tracking-tight" style={{ fontFamily: "var(--font-montserrat)", fontSize: "clamp(1.5rem, 2.8vw, 2rem)" }}>{s.value}</p>
-                <p className="text-xs text-[#F9F7F2]/55 uppercase tracking-widest mt-3" style={{ fontFamily: "var(--font-montserrat)" }}>{s.label}</p>
-                <p lang="ms" className="text-[10px] text-[#F9F7F2]/35 italic mt-1">{s.labelMs}</p>
+              <div key={s.label} className="px-3 py-6 sm:px-6 sm:py-10 text-center">
+                <p className="font-bold text-[#D4AF37] leading-none tracking-tight" style={{ fontFamily: "var(--font-montserrat)", fontSize: "clamp(1.1rem, 4vw, 2rem)" }}>{s.value}</p>
+                <p className="text-[10px] sm:text-xs text-[#F9F7F2]/55 uppercase tracking-widest mt-2 sm:mt-3" style={{ fontFamily: "var(--font-montserrat)" }}>{s.label}</p>
+                <p lang="ms" className="text-[9px] sm:text-[10px] text-[#F9F7F2]/35 italic mt-0.5 sm:mt-1">{s.labelMs}</p>
               </div>
             ))}
           </div>
@@ -110,7 +110,7 @@ export default function HomePage() {
       {/* ── CATEGORY STRIP ── */}
       <div className="bg-white border-b border-[#1B1F23]/8">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="grid grid-cols-4 divide-x divide-[#1B1F23]/6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-[#1B1F23]/6 divide-y sm:divide-y-0">
             {[
               { label: "Corporate", ms: "Korporat",     icon: "🏢", href: "/services/corporate" },
               { label: "Wedding",   ms: "Perkahwinan",  icon: "💍", href: "/services/private"   },
@@ -156,7 +156,7 @@ export default function HomePage() {
                 key={card.href}
                 href={card.href}
                 className={`service-card card-glass group relative overflow-hidden ${card.accentBorder} transition-all duration-300`}
-                style={{ minHeight: "280px" }}
+                style={{ minHeight: "clamp(220px, 50vw, 280px)" }}
               >
                 {/* Accent tint */}
                 <div className={`absolute inset-0 ${card.accentBg} pointer-events-none`} />
@@ -167,7 +167,7 @@ export default function HomePage() {
                   style={{ background: card.accentColor }}
                 />
 
-                <div className="relative p-8 h-full flex flex-col justify-between">
+                <div className="relative p-5 sm:p-8 h-full flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between mb-5">
                       <div>
@@ -219,7 +219,7 @@ export default function HomePage() {
           </div>
 
           {/* 3-column dish strip */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               { label: "Chef's Philosophy",  ms: "Falsafah Chef",    desc: "Fresh ingredients. No shortcuts. Every plate personally approved." },
               { label: "Live Stations",      ms: "Stesen Langsung",  desc: "Dim sum, carving, wok-fry — theatre and taste in one." },
@@ -305,9 +305,9 @@ export default function HomePage() {
                 { label: "Conference Full-Day · 80 pax",          price: "~RM 5,200" },
                 { label: "Bento Boxes · 100 pax",                 price: "~RM 2,200" },
               ].map((ex) => (
-                <div key={ex.label} className="flex justify-between items-center px-6 py-4">
-                  <span className="text-[#1B1F23]/55 text-sm">{ex.label}</span>
-                  <span className="font-serif font-bold text-[#D4AF37] not-italic">{ex.price}</span>
+                <div key={ex.label} className="flex justify-between items-center gap-3 px-5 py-4">
+                  <span className="text-[#1B1F23]/55 text-xs sm:text-sm min-w-0 truncate">{ex.label}</span>
+                  <span className="font-serif font-bold text-[#D4AF37] not-italic flex-shrink-0">{ex.price}</span>
                 </div>
               ))}
               <div className="px-6 py-3">
@@ -329,7 +329,7 @@ export default function HomePage() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {commitments.map(({ icon: Icon, title, titleMs, body }) => (
-              <div key={title} className="card-glass p-8 hover:shadow-lg transition-all group">
+              <div key={title} className="card-glass p-6 sm:p-8 hover:shadow-lg transition-all group">
                 <div className="w-10 h-10 border border-[#D4AF37]/30 flex items-center justify-center mb-6 group-hover:border-[#D4AF37] transition-colors">
                   <Icon className="w-4 h-4 text-[#D4AF37]" />
                 </div>
@@ -354,7 +354,7 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             {testimonials.map((t) => (
-              <div key={t.name} className="card-glass p-8 flex flex-col hover:shadow-lg transition-all">
+              <div key={t.name} className="card-glass p-6 sm:p-8 flex flex-col hover:shadow-lg transition-all">
                 <div className="flex gap-0.5 mb-5">
                   {[...Array(t.rating)].map((_, i) => (
                     <Star key={i} className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
