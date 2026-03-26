@@ -15,10 +15,12 @@ const navigation = [
       { label: "Private Events",     href: "/services/private"   },
     ],
   },
-  { label: "Menu",    href: "/menu"    },
-  { label: "Gallery", href: "/gallery" },
-  { label: "About",   href: "/about"   },
-  { label: "Blog",    href: "/blog"    },
+  { label: "Menu",      href: "/menu"      },
+  { label: "Bento",     href: "/bento"     },
+  { label: "Logistics", href: "/logistics" },
+  { label: "Gallery",   href: "/gallery"   },
+  { label: "About",     href: "/about"     },
+  { label: "Blog",      href: "/blog"      },
 ];
 
 export default function Header() {
