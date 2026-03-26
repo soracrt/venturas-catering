@@ -72,7 +72,7 @@ export default function RootLayout({
         <ThemeProvider>
           <SchemaOrg />
           <Header />
-          <main className="flex-1">
+          <main className="flex-1 pt-16 md:pt-[4.5rem]">
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />

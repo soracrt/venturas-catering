@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -26,10 +26,25 @@ const navigation = [
 export default function Header() {
   const [mobileOpen, setMobileOpen]     = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [hidden, setHidden]             = useState(false);
+  const lastScrollY                     = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      setHidden(currentY > lastScrollY.current && currentY > 64);
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     /* Solid basalt — no opacity/transparency, gold bottom border */
-    <header className="section-dark sticky top-0 z-50 bg-[#1B1F23] border-b border-[#D4AF37]">
+    <header className={cn(
+      "section-dark fixed top-0 left-0 right-0 z-50 bg-[#1B1F23] border-b border-[#D4AF37] transition-transform duration-300",
+      hidden ? "-translate-y-full" : "translate-y-0"
+    )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-18">
 
