@@ -25,7 +25,7 @@ export default function TrustSection() {
 
       {/* ── CLIENT MARQUEE ── */}
       <div className="border-y border-[#1B1F23]/8 py-5 overflow-hidden bg-white">
-        <p className="text-center text-[9px] tracking-[0.4em] uppercase text-[#1B1F23]/35 font-medium mb-4" style={{ fontFamily: "var(--font-montserrat)" }}>
+        <p className="text-center text-[9px] tracking-[0.4em] uppercase text-[#1B1F23]/55 font-medium mb-4" style={{ fontFamily: "var(--font-montserrat)" }}>
           Trusted by Malaysia&apos;s leading organisations
         </p>
         <div className="flex overflow-hidden">
@@ -33,7 +33,7 @@ export default function TrustSection() {
             {clients.map((client, i) => (
               <span
                 key={`${client}-${i}`}
-                className="text-[#1B1F23]/30 font-semibold text-xs tracking-widest uppercase flex-shrink-0"
+                className="text-[#1B1F23]/52 font-semibold text-xs tracking-widest uppercase flex-shrink-0"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
                 {client}
@@ -68,7 +68,7 @@ export default function TrustSection() {
               <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#1B1F23] mb-1">
                 Chef Hafizuddin Razak
               </h2>
-              <p lang="ms" className="text-[#1B1F23]/40 text-sm italic mb-6">
+              <p lang="ms" className="text-[#1B1F23]/60 text-sm italic mb-6">
                 Ketua Chef, Venturas Catering
               </p>
               <div className="w-10 h-px bg-[#D4AF37] mb-6" />

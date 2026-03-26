@@ -100,11 +100,11 @@ export default function HomePage() {
               <Link
                 key={cat.label}
                 href={cat.href}
-                className="flex flex-col items-center gap-1.5 py-4 text-[#1B1F23]/45 hover:text-[#D4AF37] transition-colors group"
+                className="flex flex-col items-center gap-1.5 py-4 text-[#1B1F23]/62 hover:text-[#D4AF37] transition-colors group"
               >
                 <span className="text-xl">{cat.icon}</span>
                 <span className="text-[10px] font-semibold tracking-widest uppercase group-hover:text-[#D4AF37]" style={{ fontFamily: "var(--font-montserrat)" }}>{cat.label}</span>
-                <span lang="ms" className="text-[9px] text-[#1B1F23]/30 italic">{cat.ms}</span>
+                <span lang="ms" className="text-[9px] text-[#1B1F23]/52 italic">{cat.ms}</span>
               </Link>
             ))}
           </div>
@@ -122,9 +122,9 @@ export default function HomePage() {
               <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#1B1F23] leading-tight">
                 What Are You<br />Planning?
               </h2>
-              <p lang="ms" className="text-[#1B1F23]/35 text-sm italic mt-1">Apakah majlis anda?</p>
+              <p lang="ms" className="text-[#1B1F23]/55 text-sm italic mt-1">Apakah majlis anda?</p>
             </div>
-            <Link href="/services" className="hidden md:flex items-center gap-2 text-sm text-[#1B1F23]/45 hover:text-[#D4AF37] transition-colors uppercase tracking-widest font-semibold" style={{ fontFamily: "var(--font-montserrat)" }}>
+            <Link href="/services" className="hidden md:flex items-center gap-2 text-sm text-[#1B1F23]/62 hover:text-[#D4AF37] transition-colors uppercase tracking-widest font-semibold" style={{ fontFamily: "var(--font-montserrat)" }}>
               All Services <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -154,11 +154,11 @@ export default function HomePage() {
                         <span className={`text-[10px] font-bold tracking-[0.25em] uppercase ${card.accentText}`} style={{ fontFamily: "var(--font-montserrat)" }}>
                           {card.label}
                         </span>
-                        <span lang="ms" className="text-[9px] text-[#1B1F23]/30 italic ml-2">
+                        <span lang="ms" className="text-[9px] text-[#1B1F23]/52 italic ml-2">
                           {card.labelMs}
                         </span>
                       </div>
-                      <span className="text-xs text-[#1B1F23]/40 font-medium">From {card.from}</span>
+                      <span className="text-xs text-[#1B1F23]/60 font-medium">From {card.from}</span>
                     </div>
                     <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#1B1F23] mb-3 group-hover:text-[#1B1F23]/80 transition-colors">
                       {card.title}
@@ -231,15 +231,15 @@ export default function HomePage() {
             <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#1B1F23]">
               From Enquiry to Applause<br />in 4 Steps.
             </h2>
-            <p lang="ms" className="text-[#1B1F23]/35 text-sm italic mt-2">Dari pertanyaan hingga majlis — 4 langkah mudah.</p>
+            <p lang="ms" className="text-[#1B1F23]/55 text-sm italic mt-2">Dari pertanyaan hingga majlis — 4 langkah mudah.</p>
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-px bg-[#1B1F23]/6">
             {processSteps.map((p) => (
               <div key={p.n} className="card-glass p-8 hover:bg-white transition-colors">
-                <span className="font-serif text-4xl font-bold text-[#D4AF37]/30 block mb-4 not-italic">{p.n}</span>
+                <span className="font-serif text-4xl font-bold text-[#D4AF37]/55 block mb-4 not-italic">{p.n}</span>
                 <h3 className="font-serif font-semibold text-[#1B1F23] mb-0.5 not-italic">{p.title}</h3>
-                <p lang="ms" className="text-[10px] text-[#1B1F23]/35 italic mb-3">{p.ms}</p>
-                <p className="text-[#1B1F23]/50 text-sm leading-relaxed">{p.body}</p>
+                <p lang="ms" className="text-[10px] text-[#1B1F23]/55 italic mb-3">{p.ms}</p>
+                <p className="text-[#1B1F23]/70 text-sm leading-relaxed">{p.body}</p>
               </div>
             ))}
           </div>
@@ -291,7 +291,7 @@ export default function HomePage() {
                 </div>
               ))}
               <div className="px-6 py-3">
-                <p className="text-[11px] text-[#1B1F23]/35 italic">Indicative only. Use our calculator for your exact event.</p>
+                <p className="text-[11px] text-[#1B1F23]/55 italic">Indicative only. Use our calculator for your exact event.</p>
               </div>
             </div>
           </div>
@@ -314,8 +314,8 @@ export default function HomePage() {
                   <Icon className="w-4 h-4 text-[#D4AF37]" />
                 </div>
                 <h3 className="font-serif font-semibold text-[#1B1F23] mb-0.5 text-sm not-italic">{title}</h3>
-                <p lang="ms" className="text-[10px] text-[#1B1F23]/35 italic mb-3">{titleMs}</p>
-                <p className="text-[#1B1F23]/50 text-sm leading-relaxed">{body}</p>
+                <p lang="ms" className="text-[10px] text-[#1B1F23]/55 italic mb-3">{titleMs}</p>
+                <p className="text-[#1B1F23]/70 text-sm leading-relaxed">{body}</p>
               </div>
             ))}
           </div>
@@ -330,7 +330,7 @@ export default function HomePage() {
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#1B1F23]">
               Trusted by Malaysia&apos;s Best.
             </h2>
-            <p lang="ms" className="text-[#1B1F23]/35 text-sm italic mt-1">Dipercayai oleh organisasi terkemuka Malaysia</p>
+            <p lang="ms" className="text-[#1B1F23]/55 text-sm italic mt-1">Dipercayai oleh organisasi terkemuka Malaysia</p>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             {testimonials.map((t) => (
@@ -345,7 +345,7 @@ export default function HomePage() {
                 </p>
                 <div className="border-t border-[#1B1F23]/8 pt-5">
                   <p className="font-semibold text-[#1B1F23] text-sm">{t.name}</p>
-                  <p className="text-[#1B1F23]/40 text-xs mt-0.5">{t.role}</p>
+                  <p className="text-[#1B1F23]/60 text-xs mt-0.5">{t.role}</p>
                 </div>
               </div>
             ))}

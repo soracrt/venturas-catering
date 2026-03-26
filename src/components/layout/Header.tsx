@@ -127,7 +127,7 @@ export default function Header() {
                 <Link
                   key={child.href}
                   href={child.href}
-                  className="block pl-4 text-xs text-[#1B1F23]/40 uppercase tracking-wider py-1.5 hover:text-[#1B1F23]/70 transition-colors"
+                  className="block pl-4 text-xs text-[#1B1F23]/60 uppercase tracking-wider py-1.5 hover:text-[#1B1F23]/70 transition-colors"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                   onClick={() => setMobileOpen(false)}
                 >

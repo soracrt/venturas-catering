@@ -76,7 +76,7 @@ export default function CorporatePage() {
                 <h3 className="font-serif text-xl font-bold text-[#1B1F23]">{pkg.name}</h3>
                 <div className="text-right">
                   <span className="text-[#D4AF37] font-bold text-lg not-italic">From {pkg.priceFrom}</span>
-                  {pkg.perPax && <span className="text-xs text-[#1B1F23]/40 block">/pax</span>}
+                  {pkg.perPax && <span className="text-xs text-[#1B1F23]/60 block">/pax</span>}
                 </div>
               </div>
               <p className="text-[#1B1F23]/55 text-sm mb-4">{pkg.description}</p>
