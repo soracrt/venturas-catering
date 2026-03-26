@@ -333,7 +333,7 @@ export default function HomePage() {
                 <div className="w-10 h-10 border border-[#D4AF37]/30 flex items-center justify-center mb-6 group-hover:border-[#D4AF37] transition-colors">
                   <Icon className="w-4 h-4 text-[#D4AF37]" />
                 </div>
-                <h3 className="font-serif font-semibold text-[#1B1F23] mb-0.5 text-sm not-italic">{title}</h3>
+                <h3 className="font-serif text-xl font-bold text-[#1B1F23] mb-1">{title}</h3>
                 <p lang="ms" className="text-[10px] text-[#1B1F23]/55 italic mb-3">{titleMs}</p>
                 <p className="text-[#1B1F23]/70 text-sm leading-relaxed">{body}</p>
               </div>
