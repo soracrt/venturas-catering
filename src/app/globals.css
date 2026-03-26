@@ -5,76 +5,123 @@
   --font-inter: "Inter", sans-serif;
   --font-noto: "Noto Sans", sans-serif;
 
-  /* Brand palette */
-  --color-gold: #b8932a;
-  --color-gold-light: #d4a843;
-  --color-gold-dark: #8a6d1e;
-  --color-charcoal: #1c1c1e;
-  --color-cream: #faf8f4;
-  --color-warm-gray: #6b6560;
+  /* Brand palette — shifted to deep editorial black */
+  --color-gold:       #c9a84c;
+  --color-gold-light: #e2c175;
+  --color-gold-dark:  #9a7a2e;
+  --color-black:      #080808;
+  --color-charcoal:   #141414;
+  --color-surface:    #1a1a1a;
+  --color-cream:      #f8f5f0;
+  --color-muted:      #7a7570;
 }
 
 @theme inline {
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
+  --font-sans:   var(--font-inter);
+  --font-serif:  var(--font-playfair);
 
-  --color-gold: var(--color-gold);
+  --color-gold:       var(--color-gold);
   --color-gold-light: var(--color-gold-light);
-  --color-gold-dark: var(--color-gold-dark);
-  --color-charcoal: var(--color-charcoal);
-  --color-cream: var(--color-cream);
-  --color-warm-gray: var(--color-warm-gray);
-
-  --animate-marquee: marquee 35s linear infinite;
-  --animate-marquee-reverse: marquee-reverse 35s linear infinite;
-  --animate-fade-up: fade-up 0.6s ease forwards;
+  --color-gold-dark:  var(--color-gold-dark);
+  --color-black:      var(--color-black);
+  --color-charcoal:   var(--color-charcoal);
+  --color-surface:    var(--color-surface);
+  --color-cream:      var(--color-cream);
+  --color-muted:      var(--color-muted);
 
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
   }
 
-  @keyframes marquee-reverse {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
-  }
-
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  @keyframes gold-line {
+    from { width: 0; }
+    to   { width: 64px; }
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
-/* Malay + English bilingual: Noto Sans covers both gracefully */
+/* Bilingual Malay support */
 :lang(ms) {
   font-family: var(--font-noto), var(--font-inter), sans-serif;
   letter-spacing: 0.01em;
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-playfair);
-}
-
 body {
   background: #ffffff;
-  color: var(--color-charcoal);
+  color: var(--color-black);
   font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Menu card ingredient reveal */
+/* ── Editorial heading scale ── */
+h1, h2, h3, h4 { font-family: var(--font-playfair); }
+
+/* ── Menu card ingredient reveal ── */
 .menu-card-overlay {
   transform: translateY(100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.menu-card:hover .menu-card-overlay {
-  transform: translateY(0);
+.menu-card:hover .menu-card-overlay { transform: translateY(0); }
+
+/* ── Service photo card hover ── */
+.service-card-img {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.service-card:hover .service-card-img { transform: scale(1.05); }
+
+/* ── Marquee ── */
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ── Gold divider line ── */
+.gold-line::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 2px;
+  background: var(--color-gold);
+  margin-top: 1rem;
 }
 
-/* Marquee pause on hover */
-.marquee-track:hover {
-  animation-play-state: paused;
+/* ── Ghost button base ── */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 0;
+  transition: all 0.2s ease;
 }
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.6);
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background: var(--color-gold);
+  color: #080808;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 0;
+  transition: background 0.2s ease;
+}
+.btn-gold:hover { background: var(--color-gold-light); }

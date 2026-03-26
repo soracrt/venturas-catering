@@ -12,49 +12,53 @@ const navigation = [
     href: "/services",
     children: [
       { label: "Corporate Catering", href: "/services/corporate" },
-      { label: "Private Events", href: "/services/private" },
+      { label: "Private Events",     href: "/services/private"   },
     ],
   },
-  { label: "Menu", href: "/menu" },
+  { label: "Menu",    href: "/menu"    },
   { label: "Gallery", href: "/gallery" },
-  { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
+  { label: "About",   href: "/about"   },
+  { label: "Blog",    href: "/blog"    },
 ];
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen]   = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-[#080808]/95 backdrop-blur-md border-b border-white/5">
+      {/* Gold top-line */}
+      <div className="h-px bg-gradient-to-r from-[#c9a84c] via-[#e2c175] to-transparent" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-18">
+
           {/* Logo */}
           <Link href="/" className="flex flex-col leading-tight">
-            <span className="font-serif text-xl md:text-2xl font-bold tracking-wide text-charcoal">
-              VENTURAS
+            <span className="font-serif text-xl md:text-2xl font-bold tracking-[0.12em] text-white uppercase">
+              Venturas
             </span>
-            <span className="text-xs tracking-[0.2em] uppercase text-gold font-medium -mt-0.5">
+            <span className="text-[9px] tracking-[0.35em] uppercase text-[#c9a84c] font-semibold -mt-0.5">
               Catering
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-7">
             {navigation.map((item) =>
               item.children ? (
                 <div key={item.label} className="relative group">
                   <button
-                    className="flex items-center gap-1 text-sm font-medium text-stone-700 hover:text-gold transition-colors"
+                    className="flex items-center gap-1 text-xs font-semibold text-stone-400 hover:text-white transition-colors uppercase tracking-widest"
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
                   >
                     {item.label}
-                    <ChevronDown className="w-3.5 h-3.5" />
+                    <ChevronDown className="w-3 h-3" />
                   </button>
                   <div
                     className={cn(
-                      "absolute top-full left-0 mt-2 w-52 bg-white rounded-lg shadow-lg border border-stone-100 overflow-hidden transition-all duration-150",
+                      "absolute top-full left-0 mt-3 w-52 bg-[#0e0e0e] border border-white/8 overflow-hidden transition-all duration-150",
                       servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1 pointer-events-none"
                     )}
                     onMouseEnter={() => setServicesOpen(true)}
@@ -64,7 +68,7 @@ export default function Header() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className="block px-4 py-3 text-sm text-stone-700 hover:bg-cream hover:text-gold transition-colors"
+                        className="block px-5 py-3 text-xs text-stone-400 hover:text-[#c9a84c] hover:bg-white/3 transition-colors uppercase tracking-wider"
                       >
                         {child.label}
                       </Link>
@@ -75,7 +79,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-sm font-medium text-stone-700 hover:text-gold transition-colors"
+                  className="text-xs font-semibold text-stone-400 hover:text-white transition-colors uppercase tracking-widest"
                 >
                   {item.label}
                 </Link>
@@ -85,17 +89,14 @@ export default function Header() {
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/quote"
-              className="px-5 py-2.5 bg-gold text-white text-sm font-semibold rounded-full hover:bg-gold-dark transition-colors"
-            >
-              Get a Quote
+            <Link href="/quote" className="btn-gold text-xs py-2.5 px-5">
+              Check Availability
             </Link>
           </div>
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-stone-700"
+            className="md:hidden p-2 text-stone-400 hover:text-white transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -106,12 +107,12 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-stone-100 bg-white px-4 py-4 space-y-3">
+        <div className="md:hidden border-t border-white/5 bg-[#080808] px-4 py-5 space-y-1">
           {navigation.map((item) => (
             <div key={item.label}>
               <Link
                 href={item.href}
-                className="block text-base font-medium text-stone-800 py-1.5"
+                className="block text-sm font-semibold text-stone-300 uppercase tracking-widest py-2.5 hover:text-[#c9a84c] transition-colors"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.label}
@@ -120,7 +121,7 @@ export default function Header() {
                 <Link
                   key={child.href}
                   href={child.href}
-                  className="block pl-4 text-sm text-stone-600 py-1"
+                  className="block pl-4 text-xs text-stone-600 uppercase tracking-wider py-1.5 hover:text-stone-300 transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {child.label}
@@ -130,10 +131,10 @@ export default function Header() {
           ))}
           <Link
             href="/quote"
-            className="block mt-3 px-5 py-3 bg-gold text-white text-center text-sm font-semibold rounded-full"
+            className="block mt-4 btn-gold text-center text-xs"
             onClick={() => setMobileOpen(false)}
           >
-            Get a Quote
+            Check Availability
           </Link>
         </div>
       )}
