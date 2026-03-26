@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import SchemaOrg from "@/components/seo/SchemaOrg";
 import { ThemeProvider } from "@/context/ThemeContext";
+import PageTransition from "@/components/layout/PageTransition";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -71,7 +72,9 @@ export default function RootLayout({
         <ThemeProvider>
           <SchemaOrg />
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
           <WhatsAppButton />
         </ThemeProvider>
