@@ -151,6 +151,60 @@ h2 { font-style: italic; }
     0 1px 4px rgba(27, 31, 35, 0.04);
 }
 
+/* ── Accent-variable header top-line (responds to data-theme on <html>) ── */
+.header-accent-line {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-accent),
+    color-mix(in srgb, var(--color-accent) 60%, white),
+    transparent
+  );
+  transition: background 0.4s ease;
+}
+
+/* ── Evening Event Mode — "Dinner Gala" aesthetic ── */
+html[data-evening="true"] body {
+  background: #1B1F23;
+  color: #F9F7F2;
+}
+
+/* Ivory/linen backgrounds → basalt */
+html[data-evening="true"] [class*="bg-[#F9F7F2]"],
+html[data-evening="true"] [class*="bg-[#EDE9E0]"] {
+  background-color: #1B1F23 !important;
+}
+html[data-evening="true"] [class*="bg-white"] {
+  background-color: #252A2F !important;
+}
+
+/* Borders */
+html[data-evening="true"] [class*="border-[#1B1F23]"] {
+  border-color: rgba(249, 247, 242, 0.12) !important;
+}
+html[data-evening="true"] [class*="divide-[#1B1F23]"] > * + * {
+  border-color: rgba(249, 247, 242, 0.10) !important;
+}
+
+/* Dark text → ivory */
+html[data-evening="true"] [class*="text-[#1B1F23]"] {
+  color: #F9F7F2 !important;
+}
+
+/* Glassmorphism → dark glass */
+html[data-evening="true"] .card-glass {
+  background: rgba(37, 42, 47, 0.82) !important;
+  border-color: rgba(212, 175, 55, 0.10) !important;
+  box-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.3),
+    0 1px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* bg-[#1B1F23]/10 accent chips → stay subtle in evening */
+html[data-evening="true"] [class*="bg-[#1B1F23]/"] {
+  background-color: rgba(212, 175, 55, 0.08) !important;
+}
+
 /* ── Ghost button — light theme ── */
 .btn-ghost {
   display: inline-flex;

@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import SchemaOrg from "@/components/seo/SchemaOrg";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
   description:
     "Premium Halal-certified catering for corporate events and private occasions in Shah Alam, Selangor & KL. Weddings, conferences, product launches. Get an instant quote.",
   keywords: [
+    "Premium Halal Catering Shah Alam",
     "catering Shah Alam",
     "catering Selangor",
     "Halal catering Malaysia",
@@ -42,6 +44,7 @@ export const metadata: Metadata = {
     "event catering Malaysia",
     "katering Shah Alam",
     "Venturas Catering",
+    "culinary catering Klang Valley",
   ],
   metadataBase: new URL("https://venturascatering.my"),
   openGraph: {
@@ -65,11 +68,13 @@ export default function RootLayout({
       className={`${cormorant.variable} ${montserrat.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-[#F9F7F2] text-[#1B1F23]">
-        <SchemaOrg />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <ThemeProvider>
+          <SchemaOrg />
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <WhatsAppButton />
+        </ThemeProvider>
       </body>
     </html>
   );
