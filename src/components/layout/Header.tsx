@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Moon, Sun } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/context/ThemeContext";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -27,19 +26,9 @@ const navigation = [
 export default function Header() {
   const [mobileOpen, setMobileOpen]     = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const { eveningMode, toggleEveningMode } = useTheme();
-
-  const eve = eveningMode;
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-300",
-        eve
-          ? "bg-[#1B1F23]/97 border-[#F9F7F2]/8"
-          : "bg-[#F9F7F2]/95 border-[#1B1F23]/8"
-      )}
-    >
+    <header className="sticky top-0 z-50 bg-[#F9F7F2]/95 backdrop-blur-md border-b border-[#1B1F23]/8">
       {/* Accent top-line — colour shifts with data-theme on <html> */}
       <div className="header-accent-line" />
 
@@ -48,12 +37,7 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex flex-col leading-tight">
-            <span
-              className={cn(
-                "font-serif text-xl md:text-2xl font-bold tracking-[0.12em] uppercase not-italic transition-colors duration-300",
-                eve ? "text-[#F9F7F2]" : "text-[#1B1F23]"
-              )}
-            >
+            <span className="font-serif text-xl md:text-2xl font-bold tracking-[0.12em] text-[#1B1F23] uppercase not-italic">
               Venturas
             </span>
             <span
@@ -70,12 +54,7 @@ export default function Header() {
               item.children ? (
                 <div key={item.label} className="relative group">
                   <button
-                    className={cn(
-                      "flex items-center gap-1 text-xs font-semibold transition-colors uppercase tracking-widest",
-                      eve
-                        ? "text-[#F9F7F2]/60 hover:text-[#F9F7F2]"
-                        : "text-[#1B1F23]/55 hover:text-[#1B1F23]"
-                    )}
+                    className="flex items-center gap-1 text-xs font-semibold text-[#1B1F23]/55 hover:text-[#1B1F23] transition-colors uppercase tracking-widest"
                     style={{ fontFamily: "var(--font-montserrat)" }}
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
@@ -85,13 +64,8 @@ export default function Header() {
                   </button>
                   <div
                     className={cn(
-                      "absolute top-full left-0 mt-3 w-52 border overflow-hidden transition-all duration-150 shadow-lg",
-                      eve
-                        ? "bg-[#1B1F23] border-[#F9F7F2]/10 shadow-black/30"
-                        : "bg-[#F9F7F2] border-[#1B1F23]/10 shadow-[#1B1F23]/8",
-                      servicesOpen
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 -translate-y-1 pointer-events-none"
+                      "absolute top-full left-0 mt-3 w-52 bg-[#F9F7F2] border border-[#1B1F23]/10 overflow-hidden transition-all duration-150 shadow-lg shadow-[#1B1F23]/8",
+                      servicesOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1 pointer-events-none"
                     )}
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
@@ -100,12 +74,7 @@ export default function Header() {
                       <Link
                         key={child.href}
                         href={child.href}
-                        className={cn(
-                          "block px-5 py-3 text-xs transition-colors uppercase tracking-wider",
-                          eve
-                            ? "text-[#F9F7F2]/60 hover:text-[#D4AF37] hover:bg-[#F9F7F2]/4"
-                            : "text-[#1B1F23]/60 hover:text-[#D4AF37] hover:bg-[#1B1F23]/3"
-                        )}
+                        className="block px-5 py-3 text-xs text-[#1B1F23]/60 hover:text-[#D4AF37] hover:bg-[#1B1F23]/3 transition-colors uppercase tracking-wider"
                         style={{ fontFamily: "var(--font-montserrat)" }}
                       >
                         {child.label}
@@ -117,12 +86,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={cn(
-                    "text-xs font-semibold transition-colors uppercase tracking-widest",
-                    eve
-                      ? "text-[#F9F7F2]/60 hover:text-[#F9F7F2]"
-                      : "text-[#1B1F23]/55 hover:text-[#1B1F23]"
-                  )}
+                  className="text-xs font-semibold text-[#1B1F23]/55 hover:text-[#1B1F23] transition-colors uppercase tracking-widest"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   {item.label}
@@ -131,27 +95,8 @@ export default function Header() {
             )}
           </nav>
 
-          {/* CTA + Evening Mode toggle */}
+          {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Evening Event Mode toggle */}
-            <button
-              onClick={toggleEveningMode}
-              title={eve ? "Switch to Day Mode" : "Evening Event Mode"}
-              aria-label={eve ? "Switch to Day Mode" : "Evening Event Mode"}
-              className={cn(
-                "flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest px-3 py-2 border transition-all duration-200",
-                eve
-                  ? "border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/8"
-                  : "border-[#1B1F23]/15 text-[#1B1F23]/55 hover:border-[#1B1F23]/30 hover:text-[#1B1F23]"
-              )}
-              style={{ fontFamily: "var(--font-montserrat)" }}
-            >
-              {eve ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
-              <span className="hidden lg:inline">
-                {eve ? "Day Mode" : "Evening Mode"}
-              </span>
-            </button>
-
             <Link href="/quote" className="btn-gold text-xs py-2.5 px-5">
               Check Availability
             </Link>
@@ -159,12 +104,7 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className={cn(
-              "md:hidden p-2 transition-colors",
-              eve
-                ? "text-[#F9F7F2]/60 hover:text-[#F9F7F2]"
-                : "text-[#1B1F23]/60 hover:text-[#1B1F23]"
-            )}
+            className="md:hidden p-2 text-[#1B1F23]/60 hover:text-[#1B1F23] transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -175,22 +115,12 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div
-          className={cn(
-            "md:hidden border-t px-4 py-5 space-y-1",
-            eve
-              ? "bg-[#1B1F23] border-[#F9F7F2]/8"
-              : "bg-[#F9F7F2] border-[#1B1F23]/8"
-          )}
-        >
+        <div className="md:hidden border-t border-[#1B1F23]/8 bg-[#F9F7F2] px-4 py-5 space-y-1">
           {navigation.map((item) => (
             <div key={item.label}>
               <Link
                 href={item.href}
-                className={cn(
-                  "block text-sm font-semibold uppercase tracking-widest py-2.5 hover:text-[#D4AF37] transition-colors",
-                  eve ? "text-[#F9F7F2]/70" : "text-[#1B1F23]/70"
-                )}
+                className="block text-sm font-semibold text-[#1B1F23]/70 uppercase tracking-widest py-2.5 hover:text-[#D4AF37] transition-colors"
                 style={{ fontFamily: "var(--font-montserrat)" }}
                 onClick={() => setMobileOpen(false)}
               >
@@ -200,12 +130,7 @@ export default function Header() {
                 <Link
                   key={child.href}
                   href={child.href}
-                  className={cn(
-                    "block pl-4 text-xs uppercase tracking-wider py-1.5 transition-colors",
-                    eve
-                      ? "text-[#F9F7F2]/40 hover:text-[#F9F7F2]/70"
-                      : "text-[#1B1F23]/60 hover:text-[#1B1F23]/70"
-                  )}
+                  className="block pl-4 text-xs text-[#1B1F23]/60 uppercase tracking-wider py-1.5 hover:text-[#1B1F23]/70 transition-colors"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                   onClick={() => setMobileOpen(false)}
                 >
@@ -214,20 +139,6 @@ export default function Header() {
               ))}
             </div>
           ))}
-
-          {/* Evening mode toggle */}
-          <button
-            onClick={toggleEveningMode}
-            className={cn(
-              "flex items-center gap-2 text-xs font-semibold uppercase tracking-widest py-2.5 w-full transition-colors",
-              eve ? "text-[#D4AF37]" : "text-[#1B1F23]/55"
-            )}
-            style={{ fontFamily: "var(--font-montserrat)" }}
-          >
-            {eve ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-            {eve ? "Day Mode" : "Evening Event Mode"}
-          </button>
-
           <Link
             href="/quote"
             className="block mt-4 btn-gold text-center text-xs"

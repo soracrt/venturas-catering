@@ -1,27 +1,15 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 type ServiceTheme = "corporate" | "wedding" | "bento" | null;
 
 interface ThemeContextType {
   serviceTheme: ServiceTheme;
-  eveningMode: boolean;
-  toggleEveningMode: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType>({
-  serviceTheme: null,
-  eveningMode: false,
-  toggleEveningMode: () => {},
-});
+const ThemeContext = createContext<ThemeContextType>({ serviceTheme: null });
 
 function pathToTheme(pathname: string): ServiceTheme {
   if (pathname.startsWith("/services/corporate")) return "corporate";
@@ -34,17 +22,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const pathname     = usePathname();
   const serviceTheme = pathToTheme(pathname);
 
-  const [eveningMode, setEveningMode] = useState(false);
-
-  /* Restore evening preference */
-  useEffect(() => {
-    try {
-      if (localStorage.getItem("venturas-evening") === "true") {
-        setEveningMode(true);
-      }
-    } catch {}
-  }, []);
-
   /* Apply service theme to <html> so the header accent line shifts */
   useEffect(() => {
     const html = document.documentElement;
@@ -55,23 +32,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [serviceTheme]);
 
-  /* Apply evening mode to <html> */
-  useEffect(() => {
-    const html = document.documentElement;
-    if (eveningMode) {
-      html.setAttribute("data-evening", "true");
-    } else {
-      html.removeAttribute("data-evening");
-    }
-    try {
-      localStorage.setItem("venturas-evening", String(eveningMode));
-    } catch {}
-  }, [eveningMode]);
-
-  const toggleEveningMode = useCallback(() => setEveningMode((v) => !v), []);
-
   return (
-    <ThemeContext.Provider value={{ serviceTheme, eveningMode, toggleEveningMode }}>
+    <ThemeContext.Provider value={{ serviceTheme }}>
       {children}
     </ThemeContext.Provider>
   );
