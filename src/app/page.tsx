@@ -98,7 +98,7 @@ export default function HomePage() {
               { value: "JAKIM",     label: "Halal Certified",   labelMs: "Bersijil Halal"   },
             ].map((s) => (
               <div key={s.label} className="px-6 py-10 text-center">
-                <p className="font-serif font-bold text-[#D4AF37] not-italic leading-none" style={{ fontSize: "clamp(1.6rem, 3vw, 2.25rem)" }}>{s.value}</p>
+                <p className="font-bold text-[#D4AF37] leading-none tracking-tight" style={{ fontFamily: "var(--font-montserrat)", fontSize: "clamp(1.5rem, 2.8vw, 2rem)" }}>{s.value}</p>
                 <p className="text-xs text-[#F9F7F2]/55 uppercase tracking-widest mt-3" style={{ fontFamily: "var(--font-montserrat)" }}>{s.label}</p>
                 <p lang="ms" className="text-[10px] text-[#F9F7F2]/35 italic mt-1">{s.labelMs}</p>
               </div>
